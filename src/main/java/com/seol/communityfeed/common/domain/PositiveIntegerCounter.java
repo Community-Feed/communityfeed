@@ -1,10 +1,10 @@
-package com.seol.communityfeed.user.domain;
+package com.seol.communityfeed.common.domain;
 
-public class UserRelationCounter {
+public class PositiveIntegerCounter {
 
     private int count;
 
-    public UserRelationCounter(){
+    public PositiveIntegerCounter(){
         this.count = 0;
     }
 
