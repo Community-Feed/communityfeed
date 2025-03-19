@@ -1,5 +1,7 @@
 package com.seol.communityfeed.user.domain;
 
+import com.seol.communityfeed.common.domain.PositiveIntegerCounter;
+
 import java.util.Objects;
 
 public class User {
@@ -10,6 +12,10 @@ public class User {
     private final PositiveIntegerCounter followerCounter;
 
     public User(Long id, UserInfo userInfo){
+        if (userInfo == null){
+            throw new IllegalArgumentException();
+        }
+
         this.id = id;
         this.info = userInfo;
         this.followingCount = new PositiveIntegerCounter();
@@ -57,5 +63,13 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public int followerCount(){
+        return followerCounter.getCount();
+    }
+
+    public int followingCount(){
+        return followingCount.getCount();
     }
 }
