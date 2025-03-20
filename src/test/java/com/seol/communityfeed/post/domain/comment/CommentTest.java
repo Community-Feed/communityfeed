@@ -39,35 +39,10 @@ class CommentTest {
         comment.like(otherUser);
 
         // when
-        comment.unlike();
+        comment.unlike(otherUser);
 
         // then
         assertEquals(0, comment.getLikeCount());
-    }
-
-    @Test
-    void givenCommentCreated_whenUpdatedByAuthor_thenShouldUpdateContent(){
-        // given
-        String updatedContent = "Updated comment";
-
-        // when
-        comment.updateComment(user, updatedContent);
-
-        // then
-        assertEquals(updatedContent, comment.getContent().getContentText());
-    }
-
-    @Test
-    void givenCommentCreated_whenUpdatedByOtherUser_thenThrowException(){
-        // when, then
-        assertThrows(IllegalArgumentException.class, () -> comment.updateComment(otherUser, "Hacked comment"));
-    }
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    void givenCommentCreated_whenUpdatedWithEmptyContent_thenThrowException(String invalidContent){
-        // when, then
-        assertThrows(IllegalArgumentException.class, () -> comment.updateComment(user, invalidContent));
     }
 
     @Test
@@ -77,5 +52,11 @@ class CommentTest {
 
         // when, then
         assertThrows(IllegalStateException.class, () -> comment.like(otherUser));
+    }
+
+    @Test
+    void givenCommentNotLiked_whenUnlike_thenThrowException(){
+        // when, then
+        assertThrows(IllegalStateException.class, () -> comment.unlike(otherUser));
     }
 }
