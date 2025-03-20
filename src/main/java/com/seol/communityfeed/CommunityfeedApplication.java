@@ -8,8 +8,8 @@ public class CommunityfeedApplication {
 
     public static void main(String[] args) {
 
-        //SpringApplication.run(CommunityfeedApplication.class, args);
-        System.out.println("Hello");
+        SpringApplication.run(CommunityfeedApplication.class, args);
+        //System.out.println("Hello");
     }
 
 }

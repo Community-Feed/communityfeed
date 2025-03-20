@@ -2,6 +2,7 @@ package com.seol.communityfeed.post.domain.comment;
 
 import com.seol.communityfeed.common.domain.PositiveIntegerCounter;
 import com.seol.communityfeed.post.domain.Post;
+import com.seol.communityfeed.post.domain.content.CommentContent;
 import com.seol.communityfeed.post.domain.content.Content;
 import com.seol.communityfeed.user.domain.User;
 
@@ -15,6 +16,10 @@ public class Comment {
     private final Content content;
     private final PositiveIntegerCounter likeCount;
     private final Set<User> likedUsers; // 좋아요한 사용자 목록
+
+    public static Comment createComment(Post post, User author, String content){
+        return new Comment(null, post, author, new CommentContent(content));
+    }
 
     public Comment(Long id, Post post, User author, Content content) {
         if (author == null || post == null || content == null) {
