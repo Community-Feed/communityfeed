@@ -26,10 +26,14 @@ public class PositiveIntegerCounter {
     }
 
     public synchronized void decrease() {
-        if (count <= 0) {
+       /* if (count <= 0) {
             throw new IllegalStateException("카운트는 0 이하로 감소할 수 없습니다.");
         }
-        this.count--;
+        this.count--;*/
+
+        if (count > 0) { // ✅ 0 이하로 내려가지 않도록 수정
+            count--;
+        }
     }
 
     public synchronized int getCount() {
