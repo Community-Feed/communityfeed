@@ -13,25 +13,28 @@ public class UserRelationService {
         this.userRelationRepository = userRelationRepository;
     }
 
-    public void follow(FollowUserRequestDto dto){
+    public void follow(FollowUserRequestDto dto) {
         User user = userService.getUser(dto.userId());
         User targetUser = userService.getUser(dto.targetUserId());
 
-        if (userRelationRepository.isAlreadyFollow(user, targetUser)){
-            throw new IllegalArgumentException();
+        if (user.equals(targetUser)) {
+            throw new IllegalStateException("자기 자신을 팔로우할 수 없습니다.");
+        }
+
+        if (userRelationRepository.isAlreadyFollow(user, targetUser)) {
+            throw new IllegalStateException("이미 팔로우한 사용자입니다.");
         }
 
         user.follow(targetUser);
         userRelationRepository.save(user, targetUser);
     }
 
-
-    public void unfollow(FollowUserRequestDto dto){
+    public void unfollow(FollowUserRequestDto dto) {
         User user = userService.getUser(dto.userId());
         User targetUser = userService.getUser(dto.targetUserId());
 
-        if (!userRelationRepository.isAlreadyFollow(user, targetUser)){
-            throw new IllegalArgumentException();
+        if (!userRelationRepository.isAlreadyFollow(user, targetUser)) {
+            throw new IllegalStateException("팔로우하지 않은 사용자입니다.");
         }
 
         user.unfollow(targetUser);

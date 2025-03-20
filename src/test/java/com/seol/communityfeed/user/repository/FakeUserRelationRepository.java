@@ -3,7 +3,6 @@ package com.seol.communityfeed.user.repository;
 import com.seol.communityfeed.user.application.Interface.UserRelationRepository;
 import com.seol.communityfeed.user.domain.User;
 
-import javax.management.relation.Relation;
 import java.util.HashSet;
 import java.util.Set;
 

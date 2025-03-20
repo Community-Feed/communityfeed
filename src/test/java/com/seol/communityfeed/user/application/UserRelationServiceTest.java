@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRelationServiceTest {
-
+public class UserRelationServiceTest {
 
     private final FakeUserRepository userRepository = new FakeUserRepository();
     private final UserService userService = new UserService(userRepository);
@@ -36,60 +35,55 @@ class UserRelationServiceTest {
 
     @Test
     void givenTwoUsers_whenAFollowB_thenFollowCountChange() {
-
-        //when
+        // when
         userRelationService.follow(requestDto);
 
-        //then
-        assertEquals(1, user1.followerCount());
+        // then
+        assertEquals(1, user1.followingCount());
         assertEquals(1, user2.followerCount());
     }
 
     @Test
     void givenTwoUserFollowed_whenFollow_thenUserThrowError() {
-        //given
+        // given
         userRelationService.follow(requestDto);
 
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> userRelationService.follow(requestDto));
+        // when then
+        assertThrows(IllegalStateException.class, () -> userRelationService.follow(requestDto));
     }
 
     @Test
     void givenOneUser_whenFollow_thenUserThrowError() {
-        //given
+        // given
         FollowUserRequestDto dto = new FollowUserRequestDto(user1.getId(), user1.getId());
 
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> userRelationService.follow(dto));
+        // when then
+        assertThrows(IllegalStateException.class, () -> userRelationService.follow(dto)); //  올바른 예외 타입으로 수정
     }
 
     @Test
     void givenTwoUsers_whenAUnfollowB_thenFollowCountChange() {
-
-        //when
+        // when
         userRelationService.follow(requestDto);
         userRelationService.unfollow(requestDto);
 
-        //then
+        // then
         assertEquals(0, user1.followingCount());
         assertEquals(0, user2.followerCount());
     }
 
     @Test
     void givenTwoUser_whenUnfollow_thenUserThrowError() {
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> userRelationService.unfollow(requestDto));
+        // when then
+        assertThrows(IllegalStateException.class, () -> userRelationService.unfollow(requestDto));
     }
 
     @Test
     void givenOneUser_whenUnfollow_thenUserThrowError() {
-        //given
+        // given
         FollowUserRequestDto dto = new FollowUserRequestDto(user1.getId(), user1.getId());
 
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> userRelationService.unfollow(dto));
+        // when then
+        assertThrows(IllegalStateException.class, () -> userRelationService.unfollow(dto));
     }
 }
