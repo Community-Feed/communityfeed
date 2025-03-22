@@ -4,6 +4,7 @@ import com.seol.communityfeed.user.application.Dto.CreateUserRequestDto;
 import com.seol.communityfeed.user.application.Interface.UserRepository;
 import com.seol.communityfeed.user.domain.User;
 import com.seol.communityfeed.user.domain.UserInfo;
+import org.springframework.stereotype.Service;
 
 import java.util.IllformedLocaleException;
 

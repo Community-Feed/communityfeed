@@ -1,12 +1,17 @@
 package com.seol.communityfeed.common.domain;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
+
+@Embeddable
 public class PositiveIntegerCounter {
 
     private int count;
-    private final int maxLimit;
+
+    @Transient  // 👉 DB에 매핑하지 않음
+    private int maxLimit = 1000;
 
     public PositiveIntegerCounter() {
-        this(1000); // 기본 최대값 1000
     }
 
     public PositiveIntegerCounter(int maxLimit) {
@@ -14,6 +19,11 @@ public class PositiveIntegerCounter {
             throw new IllegalArgumentException("최대 카운트는 0보다 커야 합니다.");
         }
         this.count = 0;
+        this.maxLimit = maxLimit;
+    }
+
+    public PositiveIntegerCounter(int count, int maxLimit) {
+        this.count = count;
         this.maxLimit = maxLimit;
     }
 
@@ -26,12 +36,7 @@ public class PositiveIntegerCounter {
     }
 
     public synchronized void decrease() {
-       /* if (count <= 0) {
-            throw new IllegalStateException("카운트는 0 이하로 감소할 수 없습니다.");
-        }
-        this.count--;*/
-
-        if (count > 0) { // ✅ 0 이하로 내려가지 않도록 수정
+        if (count > 0) {
             count--;
         }
     }
