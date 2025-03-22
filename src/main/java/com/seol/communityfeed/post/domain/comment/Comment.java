@@ -5,10 +5,14 @@ import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.domain.content.CommentContent;
 import com.seol.communityfeed.post.domain.content.Content;
 import com.seol.communityfeed.user.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Builder
+@AllArgsConstructor
 public class Comment {
     private final Long id;
     private final Post post;
@@ -18,7 +22,14 @@ public class Comment {
     private final Set<User> likedUsers; // 좋아요한 사용자 목록
 
     public static Comment createComment(Post post, User author, String content){
-        return new Comment(null, post, author, new CommentContent(content));
+        return Comment.builder()
+                .id(null)
+                .post(post)
+                .author(author)
+                .content(new CommentContent(content))
+                .likeCount(new PositiveIntegerCounter())
+                .likedUsers(new HashSet<>())
+                .build();
     }
 
     public Comment(Long id, Post post, User author, Content content) {

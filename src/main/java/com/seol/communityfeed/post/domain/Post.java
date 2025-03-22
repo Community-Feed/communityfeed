@@ -5,7 +5,13 @@ import com.seol.communityfeed.post.domain.content.Content;
 import com.seol.communityfeed.post.domain.content.PostContent;
 import com.seol.communityfeed.post.domain.content.PostPublicationState;
 import com.seol.communityfeed.user.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
+@AllArgsConstructor
 public class Post {
 
     private final Long id;

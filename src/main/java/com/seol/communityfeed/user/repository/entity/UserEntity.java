@@ -5,7 +5,6 @@ import com.seol.communityfeed.common.repository.entity.TimeBaseEntity;
 import com.seol.communityfeed.user.domain.UserInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
