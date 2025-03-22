@@ -1,5 +1,6 @@
 package com.seol.communityfeed.user.application;
 
+import com.seol.communityfeed.fake.FakeObjectFactory;
 import com.seol.communityfeed.user.application.Dto.CreateUserRequestDto;
 import com.seol.communityfeed.user.application.Interface.UserRepository;
 import com.seol.communityfeed.user.domain.User;
@@ -11,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 
-    private final UserRepository userRepository = new FakeUserRepository();
-    private final UserService userService = new UserService(userRepository);
+    private final UserService userService = FakeObjectFactory.getUserService();
 
     @Test
     void givenUserInfoDto_whenCreateUser_thenCanFindUser(){

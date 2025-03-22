@@ -79,4 +79,8 @@ public class Post {
     public PostPublicationState getState() {
         return state;
     }
+
+    public Content getContentObject(){
+        return content;
+    }
 }

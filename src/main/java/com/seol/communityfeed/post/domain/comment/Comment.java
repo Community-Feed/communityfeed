@@ -72,11 +72,15 @@ public class Comment {
         return author;
     }
 
-    public Content getContent() {
+    public Content getContentObject() {
         return content;
     }
 
     public int getLikeCount() {
         return likeCount.getCount();
+    }
+
+    public Set<User> getLikedUsers() {
+        return likedUsers;
     }
 }

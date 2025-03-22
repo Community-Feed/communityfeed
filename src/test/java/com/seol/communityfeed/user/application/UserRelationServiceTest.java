@@ -1,5 +1,6 @@
 package com.seol.communityfeed.user.application;
 
+import com.seol.communityfeed.fake.FakeObjectFactory;
 import com.seol.communityfeed.user.application.Dto.CreateUserRequestDto;
 import com.seol.communityfeed.user.application.Dto.FollowUserRequestDto;
 import com.seol.communityfeed.user.application.Interface.UserRelationRepository;
@@ -14,10 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserRelationServiceTest {
 
-    private final FakeUserRepository userRepository = new FakeUserRepository();
-    private final UserService userService = new UserService(userRepository);
-    private final UserRelationRepository relationRepository = new FakeUserRelationRepository();
-    private final UserRelationService userRelationService = new UserRelationService(userService, relationRepository);
+    private final UserService userService = FakeObjectFactory.getUserService();
+    private final UserRelationService userRelationService = FakeObjectFactory.getUserRelationService();
 
     private User user1;
     private User user2;

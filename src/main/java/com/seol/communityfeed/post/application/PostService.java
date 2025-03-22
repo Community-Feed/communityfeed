@@ -41,10 +41,16 @@ public class PostService {
     }
 
     public void likePost(LikeRequestDto dto) {
-        Post post = getPost(dto.targetId()); // targetId로 변경
+        System.out.println("🔍 Like 요청 - Post ID: " + dto.targetId()); // ✅ 디버깅 로그 추가
+
+        Post post = postRepository.findById(dto.targetId())
+                .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다. ID: " + dto.targetId()));
+
+        System.out.println("✅ 게시글 확인됨 - Post ID: " + post.getId());
+
         User user = userService.getUser(dto.userId());
 
-        if (likeRepository.checkLike(post, user)) { // 인스턴스를 통한 호출
+        if (likeRepository.checkLike(post, user)) {
             return;
         }
 
