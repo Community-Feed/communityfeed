@@ -24,9 +24,10 @@ class PostServiceTest {
     private final PostService postService = FakeObjectFactory.getPostService();
 
     private final User user = userService.createUser(new CreateUserRequestDto("user1", null));
-    private final User otherUser = userService.createUser(new CreateUserRequestDto("user1", null));
+    private final User otherUser = userService.createUser(new CreateUserRequestDto("user2", null));
 
-    private final CreatePostRequestDto dto = new CreatePostRequestDto(user.getId(), "this is test content", PostPublicationState.PUBLIC);
+    private final CreatePostRequestDto dto =
+            new CreatePostRequestDto(user.getId(), "this is test content", PostPublicationState.PUBLIC);
 
     @Test
     @Order(1)
@@ -35,7 +36,7 @@ class PostServiceTest {
         Post post = postService.createPost(dto);
 
         // then
-        assertNotNull(post.getId()); // ✅ ID가 null이 아닌지 확인
+        assertNotNull(post.getId());
         assertEquals(user, post.getAuthor());
         assertEquals("this is test content", post.getContent());
         assertEquals(PostPublicationState.PUBLIC, post.getState());
@@ -75,7 +76,7 @@ class PostServiceTest {
     void givenPostCreated_whenUpdatePostByOtherUser_thenThrowException() {
         // given
         Post post = postService.createPost(dto);
-        String updatedContent = "this is updated content";
+        String updatedContent = "unauthorized update";
         CreatePostRequestDto updateDto = new CreatePostRequestDto(otherUser.getId(), updatedContent, PostPublicationState.PRIVATE);
 
         // when & then
@@ -87,43 +88,36 @@ class PostServiceTest {
     void givenPostCreated_whenLikedByOtherUser_thenLikeCountShouldIncrease() {
         // given
         Post post = postService.createPost(dto);
-
-        // ✅ Post 생성 직후 ID 확인
-        assertNotNull(post.getId(), "게시글이 정상적으로 저장되지 않음");
-        System.out.println("✅ 저장된 Post ID: " + post.getId()); // 디버깅 로그 추가
-
-        // ✅ Like 요청을 생성된 Post ID로 수행
-        LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), otherUser.getId()); // ✅ post.getId() 사용
+        LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), otherUser.getId());
 
         // when
         postService.likePost(likeRequest);
 
         // then
-        assertEquals(1, postService.getPost(post.getId()).getLikeCount()); // ✅ 올바른 ID로 저장 여부 확인
+        assertEquals(1, postService.getPost(post.getId()).getLikeCount());
     }
 
     @Test
     @Order(6)
-    void givenPostLiked_whenLikedAgainBySameUser_thenDoNothing() {
+    void givenPostLiked_whenLikedAgainBySameUser_thenLikeShouldNotDuplicate() {
         // given
         Post post = postService.createPost(dto);
-        LikeRequestDto likeRequest = new LikeRequestDto(otherUser.getId(), post.getId());
+        LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), otherUser.getId());
+        postService.likePost(likeRequest);
 
         // when
-        postService.likePost(likeRequest);
         postService.likePost(likeRequest); // 중복 좋아요 요청
 
         // then
-        assertEquals(1, post.getLikeCount()); // 여전히 1이어야 함
+        assertEquals(1, post.getLikeCount());
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     void givenPostLiked_whenUnliked_thenLikeCountShouldDecrease() {
         // given
         Post post = postService.createPost(dto);
-        LikeRequestDto likeRequest = new LikeRequestDto(otherUser.getId(), post.getId());
-
+        LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), otherUser.getId());
         postService.likePost(likeRequest);
 
         // when
@@ -138,21 +132,21 @@ class PostServiceTest {
     void givenPostNotLiked_whenUnlike_thenDoNothing() {
         // given
         Post post = postService.createPost(dto);
-        LikeRequestDto likeRequest = new LikeRequestDto(otherUser.getId(), post.getId());
+        LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), otherUser.getId());
 
         // when
         postService.unlikePost(likeRequest); // 좋아요 없이 취소 요청
 
         // then
-        assertEquals(0, post.getLikeCount()); // 좋아요가 없는 상태 유지
+        assertEquals(0, post.getLikeCount());
     }
 
     @Test
     @Order(9)
-    void givenPostCreated_whenLikeByAuthor_thenThrowException() {
+    void givenPostCreated_whenLikedByAuthor_thenThrowException() {
         // given
         Post post = postService.createPost(dto);
-        LikeRequestDto likeRequest = new LikeRequestDto(user.getId(), post.getId());
+        LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), user.getId());
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> postService.likePost(likeRequest));

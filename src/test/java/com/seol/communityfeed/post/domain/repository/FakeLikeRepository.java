@@ -14,65 +14,39 @@ public class FakeLikeRepository implements LikeRepository {
 
     @Override
     public boolean checkLike(Post post, User user) {
-        if (postLikes.get(post) == null) {
-            return false;
-        }
-
-        return postLikes.get(post).contains(user);
+        return postLikes.getOrDefault(post, Collections.emptySet()).contains(user);
     }
 
     @Override
     public void like(Post post, User user) {
-        Set<User> users = postLikes.get(post);
-        if (users == null) {
-            users = Set.of(user);
-        } else {
-            users.add(user);
-        }
-
-        postLikes.put(post, users);
+        Set<User> users = postLikes.computeIfAbsent(post, k -> new HashSet<>());
+        users.add(user);
     }
 
     @Override
     public void unlike(Post post, User user) {
         Set<User> users = postLikes.get(post);
-        if (users == null) {
-            return;
+        if (users != null) {
+            users.remove(user);
         }
-
-        users.remove(user);
-        postLikes.put(post, users);
     }
 
     @Override
     public boolean checkLike(Comment comment, User user) {
-        if (commentLikes.get(comment) == null) {
-            return false;
-        }
-
-        return commentLikes.get(comment).contains(user);
+        return commentLikes.getOrDefault(comment, Collections.emptySet()).contains(user);
     }
 
     @Override
     public void like(Comment comment, User user) {
-        Set<User> users = commentLikes.get(comment);
-        if (users == null) {
-            users = Set.of(user);
-        } else {
-            users.add(user);
-        }
-
-        commentLikes.put(comment, users);
+        Set<User> users = commentLikes.computeIfAbsent(comment, k -> new HashSet<>());
+        users.add(user);
     }
 
     @Override
     public void unlike(Comment comment, User user) {
         Set<User> users = commentLikes.get(comment);
-        if (users == null) {
-            return;
+        if (users != null) {
+            users.remove(user);
         }
-
-        users.remove(user);
-        commentLikes.put(comment, users);
     }
 }
