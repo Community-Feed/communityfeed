@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: communityfeed
+
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USER}
+    password: ${LOCAL_DB_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # ?? create, create-drop, validate ? ??? ?? ??
+    show-sql: true        # ???? SQL ??
+    properties:
+      hibernate:
+        format_sql: true  # SQL ?? ?? ??
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  # ?? ?? ??? ?? ??? ??
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type.descriptor.sql.BasicBinder: trace
