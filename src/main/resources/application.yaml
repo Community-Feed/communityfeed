@@ -13,14 +13,14 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update   # ?? create, create-drop, validate ? ??? ?? ??
-    show-sql: true        # ???? SQL ??
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true  # SQL ?? ?? ??
+        format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  # ?? ?? ??? ?? ??? ??
+
   logging:
     level:
       org.hibernate.SQL: debug

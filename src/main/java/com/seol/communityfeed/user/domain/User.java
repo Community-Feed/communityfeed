@@ -7,7 +7,10 @@ import lombok.*;
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA를 위한 기본 생성자 제한
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Getter
+@Builder
 public class User {
 
     @Id
@@ -28,7 +31,6 @@ public class User {
             @AttributeOverride(name = "count", column = @Column(name = "follower_count")),
             @AttributeOverride(name = "maxLimit", column = @Column(name = "follower_max_limit"))
     })
-
     private PositiveIntegerCounter followerCounter;
 
     public User(Long id, UserInfo userInfo) {
@@ -82,6 +84,14 @@ public class User {
 
     public UserInfo getInfo() {
         return info;
+    }
+
+    public PositiveIntegerCounter getFollowingCount() {
+        return followingCount;
+    }
+
+    public PositiveIntegerCounter getFollowerCounter() {
+        return followerCounter;
     }
 
     @Override
