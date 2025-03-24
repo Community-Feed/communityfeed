@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Objects;
 
@@ -15,9 +16,11 @@ import java.util.Objects;
 @Table(name = "community_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicUpdate //변경된 값들만 업데이트 
 public class UserEntity extends TimeBaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
@@ -48,7 +51,6 @@ public class UserEntity extends TimeBaseEntity {
         if (user == null || user.getInfo() == null) {
             throw new IllegalArgumentException("User 또는 UserInfo는 null일 수 없습니다.");
         }
-        this.id = user.getId();
         this.info = user.getInfo();
         this.followingCount = user.getFollowingCount();
         this.followerCounter = user.getFollowerCounter();

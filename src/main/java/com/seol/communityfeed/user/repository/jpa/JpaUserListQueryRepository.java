@@ -24,5 +24,5 @@ public interface JpaUserListQueryRepository extends JpaRepository<UserEntity, Lo
         INNER JOIN UserEntity u ON ur.followingUserId = u.id
         WHERE ur.followerUserId = :userId
     """)
-    List<GetUserListResponseDto> getFolowerUserList(@Param("userId") Long userId);
+    List<GetUserListResponseDto> getFollowerUserList(@Param("userId") Long userId);
 }

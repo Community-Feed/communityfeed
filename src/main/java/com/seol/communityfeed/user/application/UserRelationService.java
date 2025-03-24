@@ -3,7 +3,9 @@ package com.seol.communityfeed.user.application;
 import com.seol.communityfeed.user.application.Dto.FollowUserRequestDto;
 import com.seol.communityfeed.user.application.Interface.UserRelationRepository;
 import com.seol.communityfeed.user.domain.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserRelationService {
     private final UserService userService;
     private final UserRelationRepository userRelationRepository;
