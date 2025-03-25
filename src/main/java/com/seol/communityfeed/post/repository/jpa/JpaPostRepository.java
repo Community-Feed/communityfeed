@@ -7,7 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface JpaPostRepository extends JpaRepository<PostEntity, Long> {
+    @Query("SELECT p.id FROM PostEntity p WHERE p.author.id = :authorId")
+    List<Long> findAllPostIdsByAuthorId(Long authorId);
+
 
     @Modifying(clearAutomatically = true)
     @Transactional
@@ -15,7 +20,7 @@ public interface JpaPostRepository extends JpaRepository<PostEntity, Long> {
             "SET p.content = :#{#postEntity.content}, " +
             "p.state = :#{#postEntity.state}, " +
             "p.updDt = CURRENT_TIMESTAMP " +
-            "WHERE p.id = :#{#postEntity.id}")
+            "WHERE p.id = :#{#postEntity.getId()}")
     void updatePostEntity(@Param("postEntity") PostEntity postEntity);
 
     @Modifying(clearAutomatically = true)
@@ -23,6 +28,15 @@ public interface JpaPostRepository extends JpaRepository<PostEntity, Long> {
     @Query("UPDATE PostEntity p " +
             "SET p.likeCount = :#{#postEntity.likeCount}, " +
             "p.updDt = CURRENT_TIMESTAMP " +
-            "WHERE p.id = :#{#postEntity.id}")
+            "WHERE p.id = :#{#postEntity.getId()}")
     void updateLikeCount(@Param("postEntity") PostEntity postEntity);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("UPDATE PostEntity p " +
+            "SET p.commentCount = p.commentCount + 1, " +
+            "p.updDt = CURRENT_TIMESTAMP " +
+            "WHERE p.id = :id")
+    void increaseCommentCount(Long id);
+
 }

@@ -33,6 +33,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     @Transactional
     public boolean checkLike(Post post, User user) {
         LikeEntity likeEntity = new LikeEntity(post, user);
+       // System.out.println("checkLike → id: " + likeEntity.getId());
         return jpaLikeRepository.existsById(likeEntity.getId());
     }
 
@@ -40,7 +41,17 @@ public class LikeRepositoryImpl implements LikeRepository {
     @Transactional
     public void like(Post post, User user) {
         LikeEntity likeEntity = new LikeEntity(post, user);
+
+        // ✅ 로그 추가: id null 여부 확인
+        /*System.out.println("🟡 likeEntity.getId(): " + likeEntity.getId());
+        System.out.println("🟢 targetId: " + likeEntity.getId().getTargetId());
+        System.out.println("🟢 userId: " + likeEntity.getId().getUserId());
+        System.out.println("🟢 targetType: " + likeEntity.getId().getTargetType());*/
+
         entityManager.persist(likeEntity);
+        //jpaLikeRepository.saveAndFlush(likeEntity);
+
+       // System.out.println("✅ persist 호출 완료");
 
         UserEntity authorEntity = new UserEntity(post.getAuthor());
         PostEntity postEntity = new PostEntity(post, authorEntity);
@@ -70,6 +81,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     public void like(Comment comment, User user) {
         LikeEntity likeEntity = new LikeEntity(comment, user);
         entityManager.persist(likeEntity);
+       // jpaLikeRepository.saveAndFlush(likeEntity);
 
         UserEntity authorEntity = new UserEntity(comment.getAuthor());
         PostEntity postEntity = new PostEntity(comment.getPost(), new UserEntity(comment.getPost().getAuthor()));

@@ -3,7 +3,9 @@ package com.seol.communityfeed.post.repository;
 import com.seol.communityfeed.post.application.Interface.PostRepository;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.repository.entity.post.PostEntity;
+import com.seol.communityfeed.post.repository.entity.post.UserPostQueueEntity;
 import com.seol.communityfeed.post.repository.jpa.JpaPostRepository;
+import com.seol.communityfeed.post.repository.post_queue.UserPostQueueCommandRepository;
 import com.seol.communityfeed.user.application.Interface.UserRepository;
 import com.seol.communityfeed.user.domain.User;
 import com.seol.communityfeed.user.repository.entity.UserEntity;
@@ -22,6 +24,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     private final JpaPostRepository jpaPostRepository;
     private final UserRepository userRepository;
+    private final UserPostQueueCommandRepository commandRepository;
 
     @Override
     @Transactional
@@ -40,6 +43,7 @@ public class PostRepositoryImpl implements PostRepository {
         }
 
         postEntity = jpaPostRepository.save(postEntity);
+        commandRepository.publishPost(postEntity);
         return postEntity.toPost();
     }
 

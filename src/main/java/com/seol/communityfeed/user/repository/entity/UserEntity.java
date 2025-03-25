@@ -14,7 +14,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "community_user")
-//@Table(name = "app_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @DynamicUpdate //변경된 값들만 업데이트
