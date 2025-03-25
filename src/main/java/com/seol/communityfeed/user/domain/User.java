@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.util.Objects;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
@@ -97,7 +96,8 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
         return Objects.equals(id, user.id);
     }
 
@@ -105,4 +105,5 @@ public class User {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }

@@ -2,12 +2,15 @@ package com.seol.communityfeed.post.application;
 
 import com.seol.communityfeed.post.application.Dto.CreatePostRequestDto;
 import com.seol.communityfeed.post.application.Dto.LikeRequestDto;
+import com.seol.communityfeed.post.application.Dto.UpdatePostRequestDto;
 import com.seol.communityfeed.post.application.Interface.LikeRepository;
 import com.seol.communityfeed.post.application.Interface.PostRepository;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.user.application.UserService;
 import com.seol.communityfeed.user.domain.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostService {
 
     private final UserService userService;
@@ -23,7 +26,7 @@ public class PostService {
     }
 
     public Post getPost(Long id){
-        return postRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Post not found"));
+        return postRepository.findById(id);
     }
 
     public Post createPost(CreatePostRequestDto dto){
@@ -32,8 +35,8 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post updatePost(Long id, CreatePostRequestDto dto){
-        Post post = getPost(id);
+    public Post updatePost(Long postId, UpdatePostRequestDto dto){
+        Post post = getPost(postId);
         User user = userService.getUser(dto.userId());
 
         post.updatePost(user, dto.content(), dto.state());
@@ -43,8 +46,7 @@ public class PostService {
     public void likePost(LikeRequestDto dto) {
         System.out.println("🔍 Like 요청 - Post ID: " + dto.targetId()); // ✅ 디버깅 로그 추가
 
-        Post post = postRepository.findById(dto.targetId())
-                .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다. ID: " + dto.targetId()));
+        Post post = postRepository.findById(dto.targetId());
 
         System.out.println("✅ 게시글 확인됨 - Post ID: " + post.getId());
 
@@ -58,13 +60,14 @@ public class PostService {
         likeRepository.like(post, user);
     }
 
-    public void unlikePost(LikeRequestDto dto) {
+    public void unLikePost(LikeRequestDto dto) {
         Post post = getPost(dto.targetId()); // targetId로 변경
         User user = userService.getUser(dto.userId());
 
         if (likeRepository.checkLike(post, user)) { // 인스턴스를 통한 호출
-            post.unlike();
+            post.unlike(user);
             likeRepository.unlike(post, user);
         }
     }
+
 }

@@ -37,7 +37,7 @@ class PostTest {
         post.like(otherUser);
 
         // when
-        post.unlike();
+        post.unlike(otherUser);
 
         // then
         assertEquals(0, post.getLikeCount());

@@ -5,6 +5,7 @@ import com.seol.communityfeed.user.application.Dto.GetUserResponseDto;
 import com.seol.communityfeed.user.application.Interface.UserRepository;
 import com.seol.communityfeed.user.domain.User;
 import com.seol.communityfeed.user.domain.UserInfo;
+import com.seol.communityfeed.user.repository.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.IllformedLocaleException;
@@ -25,7 +26,9 @@ public class UserService {
     }
 
     public User getUser(Long id){
-        return userRepository.findById(id);
+        User userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        return userEntity;
     }
 
     public GetUserResponseDto getUserProfile(Long id){

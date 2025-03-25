@@ -8,10 +8,12 @@ public class PositiveIntegerCounter {
 
     private int count;
 
-    @Transient  // 👉 DB에 매핑하지 않음
+    @Transient // 👉 DB 매핑 제외
     private int maxLimit = 1000;
 
     public PositiveIntegerCounter() {
+        this.count = 0;
+        this.maxLimit = 1000; // ✅ 기본값 명시
     }
 
     public PositiveIntegerCounter(int maxLimit) {
@@ -23,6 +25,9 @@ public class PositiveIntegerCounter {
     }
 
     public PositiveIntegerCounter(int count, int maxLimit) {
+        if (maxLimit <= 0) {
+            throw new IllegalArgumentException("최대 카운트는 0보다 커야 합니다.");
+        }
         this.count = count;
         this.maxLimit = maxLimit;
     }

@@ -14,9 +14,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "community_user")
+//@Table(name = "app_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@DynamicUpdate //변경된 값들만 업데이트 
+@DynamicUpdate //변경된 값들만 업데이트
 public class UserEntity extends TimeBaseEntity {
 
     @Id
@@ -51,6 +52,7 @@ public class UserEntity extends TimeBaseEntity {
         if (user == null || user.getInfo() == null) {
             throw new IllegalArgumentException("User 또는 UserInfo는 null일 수 없습니다.");
         }
+        this.id = user.getId();
         this.info = user.getInfo();
         this.followingCount = user.getFollowingCount();
         this.followerCounter = user.getFollowerCounter();
@@ -96,5 +98,14 @@ public class UserEntity extends TimeBaseEntity {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public User toDomain() {
+        return User.builder()
+                .id(this.id)
+                .info(this.info)
+                .followingCount(this.followingCount)
+                .followerCounter(this.followerCounter)
+                .build();
     }
 }

@@ -3,21 +3,28 @@ package com.seol.communityfeed.post.application;
 import com.seol.communityfeed.fake.FakeObjectFactory;
 import com.seol.communityfeed.post.application.Dto.CreatePostRequestDto;
 import com.seol.communityfeed.post.application.Dto.LikeRequestDto;
+import com.seol.communityfeed.post.application.Dto.UpdatePostRequestDto;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.domain.content.PostPublicationState;
 import com.seol.communityfeed.user.application.Dto.CreateUserRequestDto;
 import com.seol.communityfeed.user.application.UserService;
 import com.seol.communityfeed.user.domain.User;
+import com.seol.communityfeed.user.domain.UserInfo;
+import com.seol.communityfeed.user.repository.FakeUserRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("test")
 class PostServiceTest {
 
     private final UserService userService = FakeObjectFactory.getUserService();
@@ -61,7 +68,8 @@ class PostServiceTest {
         // given
         Post post = postService.createPost(dto);
         String updatedContent = "this is updated content";
-        CreatePostRequestDto updateDto = new CreatePostRequestDto(user.getId(), updatedContent, PostPublicationState.PRIVATE);
+        UpdatePostRequestDto updateDto = new UpdatePostRequestDto(
+               user.getId(), updatedContent, PostPublicationState.PRIVATE);
 
         // when
         Post updatedPost = postService.updatePost(post.getId(), updateDto);
@@ -76,8 +84,10 @@ class PostServiceTest {
     void givenPostCreated_whenUpdatePostByOtherUser_thenThrowException() {
         // given
         Post post = postService.createPost(dto);
+
         String updatedContent = "unauthorized update";
-        CreatePostRequestDto updateDto = new CreatePostRequestDto(otherUser.getId(), updatedContent, PostPublicationState.PRIVATE);
+        UpdatePostRequestDto updateDto = new UpdatePostRequestDto(
+                 otherUser.getId(), updatedContent, PostPublicationState.PRIVATE);
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> postService.updatePost(post.getId(), updateDto));
@@ -121,7 +131,7 @@ class PostServiceTest {
         postService.likePost(likeRequest);
 
         // when
-        postService.unlikePost(likeRequest);
+        postService.unLikePost(likeRequest);
 
         // then
         assertEquals(0, post.getLikeCount());
@@ -135,7 +145,7 @@ class PostServiceTest {
         LikeRequestDto likeRequest = new LikeRequestDto(post.getId(), otherUser.getId());
 
         // when
-        postService.unlikePost(likeRequest); // 좋아요 없이 취소 요청
+        postService.unLikePost(likeRequest); // 좋아요 없이 취소 요청
 
         // then
         assertEquals(0, post.getLikeCount());

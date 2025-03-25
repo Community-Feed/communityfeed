@@ -4,12 +4,13 @@ import com.seol.communityfeed.user.application.Interface.UserRepository;
 import com.seol.communityfeed.user.domain.User;
 import com.seol.communityfeed.user.repository.entity.UserEntity;
 import com.seol.communityfeed.user.repository.jpa.JpaUserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private final JpaUserRepository jpaUserRepository;
@@ -17,17 +18,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         UserEntity entity = new UserEntity(user);
-        entity = jpaUserRepository.save(entity);
-        return entity.toUser();
+        return jpaUserRepository.save(entity).toUser();
     }
 
-
-
     @Override
-    public User findById(Long id) {
-        UserEntity userEntity = jpaUserRepository
-                .findById(id)
-                .orElseThrow(IllegalArgumentException::new);
-        return userEntity.toUser();
+    public Optional<User> findById(Long id) {
+        return jpaUserRepository.findById(id).map(UserEntity::toUser);
     }
 }
