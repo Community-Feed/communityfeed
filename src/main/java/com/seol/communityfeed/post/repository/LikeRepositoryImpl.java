@@ -55,7 +55,7 @@ public class LikeRepositoryImpl implements LikeRepository {
 
         UserEntity authorEntity = new UserEntity(post.getAuthor());
         PostEntity postEntity = new PostEntity(post, authorEntity);
-        jpaPostRepository.updateLikeCount(postEntity);
+        jpaPostRepository.updateLikeCount(post.getId(), 1);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class LikeRepositoryImpl implements LikeRepository {
 
         UserEntity authorEntity = new UserEntity(post.getAuthor());
         PostEntity postEntity = new PostEntity(post, authorEntity);
-        jpaPostRepository.updateLikeCount(postEntity);
+        jpaPostRepository.updateLikeCount(post.getId(), -1);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class LikeRepositoryImpl implements LikeRepository {
         UserEntity authorEntity = new UserEntity(comment.getAuthor());
         PostEntity postEntity = new PostEntity(comment.getPost(), new UserEntity(comment.getPost().getAuthor()));
         CommentEntity commentEntity = new CommentEntity(comment, authorEntity, postEntity);
-        jpaCommentRepository.updateLikeCount(commentEntity.getId(), commentEntity.getLikeCount());
+        jpaCommentRepository.updateLikeCount(comment.getId(), 1);
     }
 
     @Override
@@ -98,6 +98,6 @@ public class LikeRepositoryImpl implements LikeRepository {
         UserEntity authorEntity = new UserEntity(comment.getAuthor());
         PostEntity postEntity = new PostEntity(comment.getPost(), new UserEntity(comment.getPost().getAuthor()));
         CommentEntity commentEntity = new CommentEntity(comment, authorEntity, postEntity);
-        jpaCommentRepository.updateLikeCount(commentEntity.getId(), commentEntity.getLikeCount());
+        jpaCommentRepository.updateLikeCount(comment.getId(), -1);
     }
 }
