@@ -33,17 +33,4 @@ public class PostController {
         return Response.ok(post.getId());
     }
 
-    @PostMapping("/like")
-    public Response<Void> likePost(@RequestBody LikeRequestDto dto){
-        log.info("💡 LikeRequest: {}", dto);
-        postService.likePost(dto);
-        return Response.ok(null);
-    }
-
-    @PostMapping("/unlike")
-    public Response<Void> unLikePost(@RequestBody LikeRequestDto dto){
-        log.info("💡 LikeRequest: {}", dto);
-        postService.unLikePost(dto);
-        return Response.ok(null);
-    }
 }

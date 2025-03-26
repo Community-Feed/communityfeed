@@ -26,17 +26,14 @@ public interface JpaPostRepository extends JpaRepository<PostEntity, Long> {
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("UPDATE PostEntity p " +
-            "SET p.likeCount = p.likeCount + :likeCount, " +
-            "p.updDt = CURRENT_TIMESTAMP " +
-            "WHERE p.id = :postId")
-    void updateLikeCount(Long postId, Integer likeCount);
-
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    @Query("UPDATE PostEntity p " +
             "SET p.commentCount = p.commentCount + 1, " +
             "p.updDt = CURRENT_TIMESTAMP " +
             "WHERE p.id = :id")
     void increaseCommentCount(Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(value = "UPDATE community_post SET like_count = GREATEST(like_count + :likeCount, 0), upd_dt = CURRENT_TIMESTAMP WHERE id = :postId", nativeQuery = true)
+    void updateLikeCount(@Param("postId") Long postId, @Param("likeCount") Integer likeCount);
 
 }

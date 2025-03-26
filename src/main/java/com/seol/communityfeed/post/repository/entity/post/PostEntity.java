@@ -72,7 +72,6 @@ public class PostEntity extends TimeBaseEntity {
                 .content(new PostContent(this.content))
                 .state(this.state)
                 .likeCount(new PositiveIntegerCounter(this.likeCount, 1000))
-                .likedUsers(new HashSet<>())  // DB엔 저장 안함
                 .build();
     }
 }

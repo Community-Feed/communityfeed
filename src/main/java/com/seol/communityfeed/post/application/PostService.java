@@ -43,31 +43,4 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public void likePost(LikeRequestDto dto) {
-        System.out.println("🔍 Like 요청 - Post ID: " + dto.targetId()); // ✅ 디버깅 로그 추가
-
-        Post post = postRepository.findById(dto.targetId());
-
-        System.out.println("✅ 게시글 확인됨 - Post ID: " + post.getId());
-
-        User user = userService.getUser(dto.userId());
-
-        if (likeRepository.checkLike(post, user)) {
-            return;
-        }
-
-        post.like(user);
-        likeRepository.like(post, user);
-    }
-
-    public void unLikePost(LikeRequestDto dto) {
-        Post post = getPost(dto.targetId()); // targetId로 변경
-        User user = userService.getUser(dto.userId());
-
-        if (likeRepository.checkLike(post, user)) { // 인스턴스를 통한 호출
-            post.unlike(user);
-            likeRepository.unlike(post, user);
-        }
-    }
-
 }

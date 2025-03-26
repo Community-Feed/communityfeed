@@ -54,7 +54,6 @@ public class CommentEntity extends TimeBaseEntity {
                 .post(post)
                 .content(new CommentContent(this.content))
                 .likeCount(new PositiveIntegerCounter(this.likeCount, 1000))
-                .likedUsers(new HashSet<>()) // DB에는 저장하지 않음
                 .build();
     }
 }

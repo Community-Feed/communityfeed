@@ -12,9 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.seol.communityfeed.post.repository.entity.post.QPostEntity.postEntity;
-import static com.seol.communityfeed.user.repository.entity.QUserEntity.userEntity;
-
 @Repository
 @RequiredArgsConstructor
 public class UserPostQueueCommandRepositoryImpl implements UserPostQueueCommandRepository{

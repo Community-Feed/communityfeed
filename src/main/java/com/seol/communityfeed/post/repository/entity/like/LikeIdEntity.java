@@ -24,7 +24,7 @@ public class LikeIdEntity {
         LikeIdEntity that = (LikeIdEntity) o;
         return Objects.equals(targetId, that.targetId) &&
                 Objects.equals(userId, that.userId) &&
-                Objects.equals(targetType, that.targetType); // 대소문자 유의
+                (targetType != null && targetType.equalsIgnoreCase(that.targetType));
     }
 
     @Override

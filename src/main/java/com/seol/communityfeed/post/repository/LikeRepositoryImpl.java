@@ -3,14 +3,13 @@ package com.seol.communityfeed.post.repository;
 import com.seol.communityfeed.post.application.Interface.LikeRepository;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.domain.comment.Comment;
-import com.seol.communityfeed.post.repository.entity.comment.CommentEntity;
 import com.seol.communityfeed.post.repository.entity.like.LikeEntity;
-import com.seol.communityfeed.post.repository.entity.post.PostEntity;
+import com.seol.communityfeed.post.repository.entity.like.LikeIdEntity;
+import com.seol.communityfeed.post.repository.entity.like.LikeTarget;
 import com.seol.communityfeed.post.repository.jpa.JpaCommentRepository;
 import com.seol.communityfeed.post.repository.jpa.JpaLikeRepository;
 import com.seol.communityfeed.post.repository.jpa.JpaPostRepository;
 import com.seol.communityfeed.user.domain.User;
-import com.seol.communityfeed.user.repository.entity.UserEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -30,74 +29,77 @@ public class LikeRepositoryImpl implements LikeRepository {
     private final JpaLikeRepository jpaLikeRepository;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean checkLike(Post post, User user) {
-        LikeEntity likeEntity = new LikeEntity(post, user);
-       // System.out.println("checkLike → id: " + likeEntity.getId());
-        return jpaLikeRepository.existsById(likeEntity.getId());
+        LikeIdEntity likeId = buildLikeId(post.getId(), user.getId(), LikeTarget.POST);
+        return jpaLikeRepository.existsById(likeId);
     }
 
     @Override
     @Transactional
     public void like(Post post, User user) {
-        LikeEntity likeEntity = new LikeEntity(post, user);
+        LikeIdEntity likeId = buildLikeId(post.getId(), user.getId(), LikeTarget.POST);
 
-        // ✅ 로그 추가: id null 여부 확인
-        /*System.out.println("🟡 likeEntity.getId(): " + likeEntity.getId());
-        System.out.println("🟢 targetId: " + likeEntity.getId().getTargetId());
-        System.out.println("🟢 userId: " + likeEntity.getId().getUserId());
-        System.out.println("🟢 targetType: " + likeEntity.getId().getTargetType());*/
+        if (jpaLikeRepository.existsById(likeId)) {
+            // 중복 방지
+            return;
+        }
 
-        entityManager.persist(likeEntity);
-        //jpaLikeRepository.saveAndFlush(likeEntity);
-
-       // System.out.println("✅ persist 호출 완료");
-
-        UserEntity authorEntity = new UserEntity(post.getAuthor());
-        PostEntity postEntity = new PostEntity(post, authorEntity);
+        jpaLikeRepository.save(new LikeEntity(post, user));
         jpaPostRepository.updateLikeCount(post.getId(), 1);
     }
 
     @Override
     @Transactional
     public void unlike(Post post, User user) {
-        LikeEntity likeEntity = new LikeEntity(post, user);
-        jpaLikeRepository.deleteById(likeEntity.getId());
+        LikeIdEntity likeId = buildLikeId(post.getId(), user.getId(), LikeTarget.POST);
 
-        UserEntity authorEntity = new UserEntity(post.getAuthor());
-        PostEntity postEntity = new PostEntity(post, authorEntity);
+        if (!jpaLikeRepository.existsById(likeId)) {
+            // 존재하지 않는 좋아요에 대한 삭제 방지
+            return;
+        }
+
+        jpaLikeRepository.deleteById(likeId);
         jpaPostRepository.updateLikeCount(post.getId(), -1);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean checkLike(Comment comment, User user) {
-        LikeEntity likeEntity = new LikeEntity(comment, user);
-        return jpaLikeRepository.existsById(likeEntity.getId());
+        LikeIdEntity likeId = buildLikeId(comment.getId(), user.getId(), LikeTarget.COMMENT);
+        return jpaLikeRepository.existsById(likeId);
     }
 
     @Override
     @Transactional
     public void like(Comment comment, User user) {
-        LikeEntity likeEntity = new LikeEntity(comment, user);
-        entityManager.persist(likeEntity);
-       // jpaLikeRepository.saveAndFlush(likeEntity);
+        LikeIdEntity likeId = buildLikeId(comment.getId(), user.getId(), LikeTarget.COMMENT);
 
-        UserEntity authorEntity = new UserEntity(comment.getAuthor());
-        PostEntity postEntity = new PostEntity(comment.getPost(), new UserEntity(comment.getPost().getAuthor()));
-        CommentEntity commentEntity = new CommentEntity(comment, authorEntity, postEntity);
+        if (jpaLikeRepository.existsById(likeId)) {
+            return;
+        }
+
+        jpaLikeRepository.save(new LikeEntity(comment, user));
         jpaCommentRepository.updateLikeCount(comment.getId(), 1);
     }
 
     @Override
     @Transactional
     public void unlike(Comment comment, User user) {
-        LikeEntity likeEntity = new LikeEntity(comment, user);
-        jpaLikeRepository.deleteById(likeEntity.getId());
+        LikeIdEntity likeId = buildLikeId(comment.getId(), user.getId(), LikeTarget.COMMENT);
 
-        UserEntity authorEntity = new UserEntity(comment.getAuthor());
-        PostEntity postEntity = new PostEntity(comment.getPost(), new UserEntity(comment.getPost().getAuthor()));
-        CommentEntity commentEntity = new CommentEntity(comment, authorEntity, postEntity);
+        if (!jpaLikeRepository.existsById(likeId)) {
+            return;
+        }
+
+        jpaLikeRepository.deleteById(likeId);
         jpaCommentRepository.updateLikeCount(comment.getId(), -1);
+    }
+
+    /**
+     * 내부 헬퍼 메서드 - 대소문자 포함 안전하게 LikeIdEntity 생성
+     */
+    private LikeIdEntity buildLikeId(Long targetId, Long userId, LikeTarget type) {
+        return new LikeIdEntity(targetId, userId, type.name()); // Enum.name()은 항상 대문자
     }
 }

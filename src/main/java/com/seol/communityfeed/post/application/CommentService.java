@@ -45,25 +45,4 @@ public class CommentService {
         return commentRepository.save(comment);
    }
 
-    public void likeComment(LikeRequestDto dto){
-        Comment comment = getComment(dto.targetId());
-        User user = userService.getUser(dto.userId());
-
-        if (likeRepository.checkLike(comment, user)) {  // 인스턴스를 통한 호출
-            return;
-        }
-
-        comment.like(user);
-        likeRepository.like(comment, user);
-    }
-
-    public void unlikeComment(LikeRequestDto dto){
-        Comment comment = getComment(dto.targetId());
-        User user = userService.getUser(dto.userId());
-
-        if (likeRepository.checkLike(comment, user)) {  //  인스턴스를 통한 호출
-            comment.unlike(user);
-            likeRepository.unlike(comment, user);
-        }
-    }
 }

@@ -1,7 +1,6 @@
 package com.seol.communityfeed.post.repository.jpa;
 
 import com.seol.communityfeed.post.repository.entity.comment.CommentEntity;
-import com.seol.communityfeed.post.repository.entity.post.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,11 @@ public interface JpaCommentRepository extends JpaRepository<CommentEntity, Long>
 
     @Modifying(clearAutomatically = true)
     @Transactional
-    @Query("UPDATE CommentEntity c SET c.likeCount = c.likeCount +:likeCount, c.updDt = CURRENT_TIMESTAMP WHERE c.id = :commentId")
-    int updateLikeCount(Long commentId, Integer likeCount);
+    @Query(value = "UPDATE community_comment " +
+            "SET like_count = GREATEST(like_count + :likeCount, 0), " +
+            "upd_dt = CURRENT_TIMESTAMP " +
+            "WHERE id = :commentId", nativeQuery = true)
+    int updateLikeCount(@Param("commentId") Long commentId, @Param("likeCount") Integer likeCount);
+
 }
 
