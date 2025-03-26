@@ -10,6 +10,8 @@ spring:
     username: ${LOCAL_DB_USER}
     password: ${LOCAL_DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000   # ⬅ DB 연결 재시도 (30초)
 
   jpa:
     hibernate:
@@ -20,8 +22,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-
-  logging:
-    level:
-      org.hibernate.SQL: debug
-      org.hibernate.type.descriptor.sql.BasicBinder: trace
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace

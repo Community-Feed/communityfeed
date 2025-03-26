@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: community-db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${LOCAL_DB_PW}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - community-net
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: community-app
+    ports:
+      - "8081:8081"
+    env_file:
+      - docker/app.env
+    depends_on:
+      - mysql
+    networks:
+      - community-net
+
+networks:
+  community-net:
+
+volumes:
+  mysql_data:
