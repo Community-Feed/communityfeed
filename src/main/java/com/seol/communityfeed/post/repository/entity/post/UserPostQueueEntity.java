@@ -1,7 +1,5 @@
 package com.seol.communityfeed.post.repository.entity.post;
 
-import com.seol.communityfeed.post.domain.Post;
-import com.seol.communityfeed.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

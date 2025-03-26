@@ -12,5 +12,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetPostContentResponseDto extends GetContentResponseDto {
-    private Integer commentCount;
+    private Integer commentCount; // 게시글에 달린 댓글 수
 }
