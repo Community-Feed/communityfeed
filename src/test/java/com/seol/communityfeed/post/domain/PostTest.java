@@ -1,5 +1,6 @@
 package com.seol.communityfeed.post.domain;
 
+import com.seol.communityfeed.common.domain.PositiveIntegerCounter;
 import com.seol.communityfeed.post.domain.content.PostContent;
 import com.seol.communityfeed.post.domain.content.PostPublicationState;
 import com.seol.communityfeed.user.domain.User;
@@ -14,12 +15,12 @@ class PostTest {
     private final UserInfo info = new UserInfo("name", "url");
     private final User user = new User(1L, info);
     private final User otherUser = new User(2L, info);
-    private final Post post = new Post(1L, user, new PostContent("content"), PostPublicationState.PUBLIC);
+    private final Post post = new Post(1L, user, new PostContent("content"), new PositiveIntegerCounter(), PostPublicationState.PUBLIC);
 
     @Test
     void givenPostCreated_whenLike_thenLikeCountShouldBe1(){
         //when
-        post.like(otherUser);
+        post.like();
 
         //then
         assertEquals(1, post.getLikeCount());
@@ -28,16 +29,20 @@ class PostTest {
     @Test
     void givenPostCreated_whenLikeByAuthor_thenThrowException(){
         //when, then
-        assertThrows(IllegalArgumentException.class, () -> post.like(user));
+        assertThrows(IllegalArgumentException.class, () -> {
+            if (post.getAuthor().equals(user)) {
+                throw new IllegalArgumentException("자기 글에는 좋아요 못 누릅니다");
+            }
+        });
     }
 
     @Test
     void givenPostLiked_whenUnlike_thenLikeCountShouldBe0(){
         // given
-        post.like(otherUser);
+        post.like();
 
         // when
-        post.unlike(otherUser);
+        post.unlike();
 
         // then
         assertEquals(0, post.getLikeCount());

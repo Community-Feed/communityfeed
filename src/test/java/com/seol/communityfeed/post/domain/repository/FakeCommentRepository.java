@@ -1,5 +1,6 @@
 package com.seol.communityfeed.post.domain.repository;
 
+import com.seol.communityfeed.common.domain.PositiveIntegerCounter;
 import com.seol.communityfeed.post.application.Interface.CommentRepository;
 import com.seol.communityfeed.post.domain.comment.Comment;
 
@@ -20,7 +21,13 @@ public class FakeCommentRepository implements CommentRepository {
         }
 
         long id = store.size() + 1;
-        Comment newComment = new Comment(id, comment.getPost(), comment.getAuthor(), comment.getContentObject());
+        Comment newComment = new Comment(
+                id,
+                comment.getPost(),
+                comment.getAuthor(),
+                comment.getContentObject(),
+                new PositiveIntegerCounter(comment.getLikeCount(), 1000)
+        );
         store.put(id, newComment);
 
         return newComment;
