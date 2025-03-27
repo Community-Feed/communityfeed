@@ -1,4 +1,4 @@
-package com.seol.communityfeed.post.domain.repository;
+package com.seol.communityfeed.post.repository;
 
 import com.seol.communityfeed.post.application.Interface.PostRepository;
 import com.seol.communityfeed.post.domain.Post;

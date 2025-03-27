@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface JpaPostRepository extends JpaRepository<PostEntity, Long> {
-    @Query("SELECT p.id FROM PostEntity p WHERE p.author.id = :authorId")
-    List<Long> findAllPostIdsByAuthorId(Long authorId);
+    @Query("SELECT p FROM PostEntity p WHERE p.author.id = :authorId")
+    List<PostEntity> findAllPostIdsByAuthorId(Long authorId);
 
 
     @Modifying(clearAutomatically = true)
