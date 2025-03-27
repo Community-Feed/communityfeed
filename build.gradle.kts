@@ -44,6 +44,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    //인수 테스트
+    testImplementation("io.rest-assured:rest-assured:5.5.0")
+    runtimeOnly("com.h2database:h2")
 
 }
 

@@ -6,8 +6,9 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
+      ddl-auto: create-drop         # 테스트마다 DB 스키마를 생성하고 종료 시 삭제
+    show-sql: true                  # SQL 출력
+    oven-in-view: false
     properties:
       hibernate:
         format_sql: true
