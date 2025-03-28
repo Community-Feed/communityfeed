@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.seol.communityfeed.acceptance.steps.FeedAcceptanceSteps.requestCreatePost;
-import static com.seol.communityfeed.acceptance.steps.FeedAcceptanceSteps.requestFeed;
+import static com.seol.communityfeed.acceptance.steps.FeedAcceptanceSteps.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FeedAcceptanceTest extends AcceptanceTestTemplate {
+
+    private String token;
 
     /**
      * User1 - follow -> User2
@@ -22,6 +23,7 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
     @BeforeEach
     void setUp(){
         super.init();
+        this.token = login("user1@gmail.com");
     }
 
     /**
@@ -29,7 +31,7 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
      * User1 Get Post 1 From Feed
      */
     @Test
-    void givenUserHasFollowerAndCreatePost_whenFollowerUserRequestFeed_thenFollowerCanGetPostFromFeed(){//
+    void givenUserHasFollowerAndCreatePost_whenFollowerUserRequestFeed_thenFollowerCanGetPostFromFeed(){
         //given
         CreatePostRequestDto dto = new CreatePostRequestDto(2L, "user 1 can get this test", PostPublicationState.PUBLIC);
         Long createdPostId = requestCreatePost(dto);
@@ -41,6 +43,16 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
         assertEquals(1, result.size());
         assertEquals(createdPostId, result.get(0).getId());
 
+    }
+
+    @Test
+    void givenUserHasFollower_whenFollowerUserRequestFeedWithInvalidToken_thenFollowerCanGetPostFromFeed() {
+        //given
+        //when
+        Integer code =requestFeedCode("abcd"); //팔로워 피드 요청
+
+        //then
+        assertEquals(400, code);
     }
 
 }

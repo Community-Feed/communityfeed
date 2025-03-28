@@ -1,5 +1,7 @@
 package com.seol.communityfeed.post.repository.ui;
 
+import com.seol.communityfeed.common.principal.AuthPrincipal;
+import com.seol.communityfeed.common.principal.UserPrincipal;
 import com.seol.communityfeed.common.ui.Response;
 import com.seol.communityfeed.post.repository.post_queue.UserPostQueueQueryRepository;
 import com.seol.communityfeed.post.repository.ui.dto.GetPostContentResponseDto;
@@ -20,9 +22,9 @@ public class FeedController {
 
     private final UserPostQueueQueryRepository queueQueryRepository;
 
-    @GetMapping("/{userId}")
-    public Response<List<GetPostContentResponseDto>> getPostFeed(@PathVariable(name = "userId")Long userId, Long lastPostId){
-        List<GetPostContentResponseDto> result = queueQueryRepository.getContentResponse(userId, lastPostId);
+    @GetMapping("")
+    public Response<List<GetPostContentResponseDto>> getPostFeed(@AuthPrincipal UserPrincipal userPrincipal, Long lastPostId){
+        List<GetPostContentResponseDto> result = queueQueryRepository.getContentResponse(userPrincipal.getUserId(), lastPostId);
         return Response.ok(result);
     }
 }

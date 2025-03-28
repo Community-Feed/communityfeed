@@ -1,11 +1,14 @@
 package com.seol.communityfeed.acceptance.utils;
 
 import com.seol.communityfeed.acceptance.steps.UserAcceptanceSteps;
-import com.seol.communityfeed.user.application.Dto.CreateUserRequestDto;
+import com.seol.communityfeed.auth.application.dto.CreateUserAuthRequestDto;
+import com.seol.communityfeed.auth.application.dto.SendEmailRequestDto;
 import com.seol.communityfeed.user.application.Dto.FollowUserRequestDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
+
+import static com.seol.communityfeed.acceptance.steps.SignUpAcceptanceSteps.*;
 
 @Component
 public class DataLoader {
@@ -14,10 +17,10 @@ public class DataLoader {
     private EntityManager entityManager;
 
     public void loadDate(){
-        CreateUserRequestDto dto = new CreateUserRequestDto("test user", "");
-        UserAcceptanceSteps.createUser(dto);
-        UserAcceptanceSteps.createUser(dto);
-        UserAcceptanceSteps.createUser(dto);
+        // user 1, 2, 3 생성
+        for(int i=1; i<4; i++){
+            createUser("user"+i+"@test.com");
+        }
 
         UserAcceptanceSteps.followUser(new FollowUserRequestDto(1L, 2L));
         UserAcceptanceSteps.followUser(new FollowUserRequestDto(1L, 3L));
@@ -40,5 +43,12 @@ public class DataLoader {
         return entityManager.createQuery("SELECT userId FROM UserAuthEntity WHERE email =:email", Long.class)
                 .setParameter("email", email)
                 .getSingleResult();
+    }
+
+    public void createUser(String email){
+        requestSendEmail(new SendEmailRequestDto(email));
+        String token = getEmailToken(email);
+        requestVerifyEmail(email, token);
+        registerUser(new CreateUserAuthRequestDto(email,"password","USER","name",""));
     }
 }

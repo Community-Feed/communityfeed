@@ -3,7 +3,6 @@ package com.seol.communityfeed.acceptance.steps;
 import com.seol.communityfeed.post.application.Dto.CreatePostRequestDto;
 import com.seol.communityfeed.post.repository.ui.dto.GetPostContentResponseDto;
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import org.springframework.http.MediaType;
 
 import java.util.List;
@@ -26,15 +25,30 @@ public class FeedAcceptanceSteps {
         return response.then().extract().jsonPath().getLong("value");
     }
 
-    public static List<GetPostContentResponseDto> requestFeed(Long userId) {
+    public static List<GetPostContentResponseDto> requestFeed(String token) {
         return RestAssured
                 .given().log().all()
+                .header("Authorization","Bearer"+ token)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .get("/feed/{userId}", userId) // ✅ 바인딩 수정
+                .get("/feed")
                 .then().log().all()
                 .extract()
                 .jsonPath()
                 .getList("value", GetPostContentResponseDto.class); // ✅ getList 사용
+    }
+
+
+    public static Integer requestFeedCode(String token){
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Barer"+token)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/feed")
+                .then().log().all()
+                .extract()
+                .jsonPath()
+                .get("code");
     }
 }

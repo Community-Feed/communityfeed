@@ -20,6 +20,13 @@ public class Password {
         return new Password(encoder.encode(rawPassword));
     }
 
+    public static Password createPassword(String password){
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("패스워드는 빈값이 될 수 없습니다.");
+        }
+        return new Password(password);
+    }
+
     public boolean matchPassword(String rawPassword) {
         return encoder.matches(rawPassword, this.encryptedPassword);
     }
