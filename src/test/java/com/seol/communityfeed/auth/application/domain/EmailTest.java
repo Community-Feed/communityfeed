@@ -11,26 +11,23 @@ class EmailTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    void givenEmailIsEmpty_whenCreate_thenThrowError(String email){
-        assertThrows(IllegalArgumentException.class,()-> Email.createEmail(email));
+    void givenEmailIsEmpty_whenCreate_thenThrowError(String email) {
+        assertThrows(IllegalArgumentException.class, () -> Email.createEmail(email));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"valid/@ab", "naver.com", "natty@naver.com", "안녕하세요.com"})
-    void givenInvalidEmail_whenCreate_thenThrowError(String email){
-        assertThrows(IllegalArgumentException.class, ()->Email.createEmail(email));
+    @ValueSource(strings = {"valid/@ab", "naver.com", "natty@naver", "안녕하세요.com"})
+    void givenInvalidEmail_whenCreate_thenThrowError(String email) {
+        assertThrows(IllegalArgumentException.class, () -> Email.createEmail(email));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"valid@ab", "a@naver.com", "natty@naver", "test@test.com"})
-    void givenEmailValidWhenCreateThenReturnEmail(String email){
-        //given
-
-        //when
+    @ValueSource(strings = {"valid@ab.com", "a@naver.com", "test@test.com"})
+    void givenEmailValidWhenCreateThenReturnEmail(String email) {
+        // when
         Email emailValue = Email.createEmail(email);
 
-        //then
+        // then
         assertEquals(email, emailValue.getEmailText());
     }
-
 }

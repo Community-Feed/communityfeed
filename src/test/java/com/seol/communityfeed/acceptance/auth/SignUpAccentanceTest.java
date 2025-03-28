@@ -42,6 +42,6 @@ class SignUpAccentanceTest extends AcceptanceTestTemplate {
         //then
        // String token = this.getEmailToken(email);
        // assertNull(token);
-        assertEquals(500, code);
+        assertEquals(400, code);
     }
 }
