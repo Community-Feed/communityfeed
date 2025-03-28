@@ -37,4 +37,8 @@ public class EmailVerificationEntity extends TimeBaseEntity {
     public void verify(){
         this.isVerified = true;
     }
+
+    public boolean hasSameToken(String token){
+        return this.token.equals(token);
+    }
 }

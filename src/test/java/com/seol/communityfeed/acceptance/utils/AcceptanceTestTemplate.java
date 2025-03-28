@@ -31,4 +31,12 @@ public class AcceptanceTestTemplate {
         return loader.getEmailToken(email);
     }
 
+    protected boolean isEmailVerified(String email){
+        return loader.isEmailVerified(email);
+    }
+
+    protected Long getUserId(String email){
+        return loader.getUserId(email);
+    }
+
 }
