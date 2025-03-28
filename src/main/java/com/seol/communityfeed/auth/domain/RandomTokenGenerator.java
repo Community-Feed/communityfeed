@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 public class RandomTokenGenerator {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int TOKEN_LENGTH = 12; // 원하는 길이
+    private static final int TOKEN_LENGTH = 20; // ← 12에서 20으로 수정
     private static final SecureRandom random = new SecureRandom();
 
     private RandomTokenGenerator() {
