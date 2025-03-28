@@ -48,6 +48,9 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:5.5.0")
     runtimeOnly("com.h2database:h2")
 
+    //spring security
+    implementation ("org.springframework.boot:spring-boot-starter-security")
+
 }
 
 val querydslDir = "${layout.projectDirectory}/build/generated/querydsl"

@@ -1,6 +1,11 @@
 package com.seol.communityfeed.auth.domain;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 public class Password {
+
+    private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private final String encryptedPassword;
 
@@ -8,15 +13,15 @@ public class Password {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public static Password createEncryptPassword(String password) {
-        if (password == null || password.isEmpty()) {
+    public static Password createEncryptPassword(String rawPassword) {
+        if (rawPassword == null || rawPassword.isBlank()) {
             throw new IllegalArgumentException("패스워드는 빈값이 될 수 없습니다.");
         }
-        return new Password(SHA256.encrypt(password));
+        return new Password(encoder.encode(rawPassword));
     }
 
-    public boolean matchPassword(String password) {
-        return encryptedPassword.equals(SHA256.encrypt(password));
+    public boolean matchPassword(String rawPassword) {
+        return encoder.matches(rawPassword, this.encryptedPassword);
     }
 
     public String getEncryptedPassword() {

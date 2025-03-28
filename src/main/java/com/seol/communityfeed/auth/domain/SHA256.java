@@ -3,6 +3,8 @@ package com.seol.communityfeed.auth.domain;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+// 사용 안함
+//BCrypt 사용 시 불필요
 public class SHA256 {
     public static String encrypt(String text){
         try{

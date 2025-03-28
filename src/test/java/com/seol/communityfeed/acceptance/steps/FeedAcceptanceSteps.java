@@ -11,16 +11,19 @@ import java.util.List;
 public class FeedAcceptanceSteps {
 
     public static Long requestCreatePost(CreatePostRequestDto dto) {
-        return RestAssured
-                .given().log().all()
+        var response = RestAssured
+                .given()
                 .body(dto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/post")
-                .then().log().all()
-                .extract()
-                .jsonPath()
-                .getObject("value", Long.class);
+                .post("/post");
+
+        if (response.statusCode() != 200) {
+            System.out.println("Failed to create post. Status: " + response.statusCode());
+            return null;
+        }
+
+        return response.then().extract().jsonPath().getLong("value");
     }
 
     public static List<GetPostContentResponseDto> requestFeed(Long userId) {
