@@ -28,4 +28,5 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 
-secret-key: secretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkey
+# application.yaml
+secret-key: dG9wLXNlY3JldC1rZXktc3VwZXItdG9wLXNlY3JldC1rZXk=

@@ -4,17 +4,16 @@ import com.seol.communityfeed.auth.domain.TokenProvider;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 
 class TokenProviderTest {
 
-    private final SecretKey secretKey = Keys.hmacShaKeyFor(
-            "testkeytestkeytestkeytestkeytestkeytestkeytestkeytestkey".getBytes(StandardCharsets.UTF_8)
-    );
-
+    private final String testSecret = "top-secret-key-super-top-secret-key";
+    private final SecretKey secretKey = new SecretKeySpec(testSecret.getBytes(), "HmacSHA256");
     private final TokenProvider tokenProvider = new TokenProvider(secretKey);
 
     @Test

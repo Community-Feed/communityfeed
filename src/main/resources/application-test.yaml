@@ -14,4 +14,5 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
 
-secret-key: secretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkeysecretkey
+# application.yaml
+secret-key: dG9wLXNlY3JldC1rZXktc3VwZXItdG9wLXNlY3JldC1rZXk=

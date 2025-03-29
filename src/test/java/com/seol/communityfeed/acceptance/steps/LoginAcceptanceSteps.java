@@ -8,17 +8,28 @@ import org.springframework.http.MediaType;
 
 public class LoginAcceptanceSteps {
 
-    public static String requestLoginGetToken(LoginRequestDto dto){
-        UserAccessTokenResponseDto res =  RestAssured
-                .given()
+    public static String requestLoginGetToken(LoginRequestDto dto) {
+        var response = RestAssured
+                .given().log().all()
                 .body(dto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("login")
-                .then()
+                .post("/login") // 로그인 API 경로가 맞는지 확인
+                .then().log().all()
                 .extract()
-                .jsonPath()
-                .getObject("value", UserAccessTokenResponseDto.class);
+                .response();
+
+        if (response.statusCode() != 200) {
+            System.out.println("❌ 로그인 실패! Status code: " + response.statusCode());
+            return null;
+        }
+
+        UserAccessTokenResponseDto res = response.as(UserAccessTokenResponseDto.class);
+        if (res == null) {
+            System.out.println("❌ 응답 바디를 UserAccessTokenResponseDto로 파싱 실패!");
+            return null;
+        }
+
         return res.accessToken();
     }
 

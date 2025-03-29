@@ -9,9 +9,10 @@ import java.util.List;
 
 public class FeedAcceptanceSteps {
 
-    public static Long requestCreatePost(CreatePostRequestDto dto) {
+    public static Long requestCreatePost(CreatePostRequestDto dto, String token) {
         var response = RestAssured
                 .given()
+                .header("Authorization", "Bearer " + token)
                 .body(dto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
@@ -28,21 +29,20 @@ public class FeedAcceptanceSteps {
     public static List<GetPostContentResponseDto> requestFeed(String token) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization","Bearer"+ token)
+                .header("Authorization", "Bearer " + token)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .get("/feed")
                 .then().log().all()
                 .extract()
                 .jsonPath()
-                .getList("value", GetPostContentResponseDto.class); // ✅ getList 사용
+                .getList("value", GetPostContentResponseDto.class);
     }
 
-
-    public static Integer requestFeedCode(String token){
+    public static Integer requestFeedCode(String token) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", "Barer"+token)
+                .header("Authorization", "Bearer " + token)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .get("/feed")
@@ -50,5 +50,16 @@ public class FeedAcceptanceSteps {
                 .extract()
                 .jsonPath()
                 .get("code");
+    }
+
+    public static void requestFollow(Long targetUserId, String token) {
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/follow/" + targetUserId)
+                .then()
+                .statusCode(200);
     }
 }

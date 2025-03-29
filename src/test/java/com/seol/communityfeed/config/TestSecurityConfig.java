@@ -10,12 +10,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @Profile("test")
 public class TestSecurityConfig {
 
+    // Spring Security 6+ 버전에서는 아래와 같이 람다식 방식으로 수정
     @Bean
     public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeHttpRequests()
-                .anyRequest().permitAll(); // 테스트에서는 모든 요청 허용
+                .csrf(csrf -> csrf.disable()) // lambda 형식으로 변경
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                ); // lambda 형식으로 변경
 
         return http.build();
     }
