@@ -56,6 +56,10 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-gson:0.12.6")
 
+    //redis
+    implementation ("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation ("org.springframework.boot:spring-boot-starter-cache")
+
 }
 
 val querydslDir = "${layout.projectDirectory}/build/generated/querydsl"

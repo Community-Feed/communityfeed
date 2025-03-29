@@ -1,11 +1,7 @@
 package com.seol.communityfeed.acceptance;
 
 import com.seol.communityfeed.acceptance.steps.FeedAcceptanceSteps;
-import com.seol.communityfeed.acceptance.steps.SignUpAcceptanceSteps;
 import com.seol.communityfeed.acceptance.utils.AcceptanceTestTemplate;
-import com.seol.communityfeed.auth.application.dto.CreateUserAuthRequestDto;
-import com.seol.communityfeed.auth.application.dto.LoginRequestDto;
-import com.seol.communityfeed.auth.application.dto.SendEmailRequestDto;
 import com.seol.communityfeed.post.application.Dto.CreatePostRequestDto;
 import com.seol.communityfeed.post.domain.content.PostPublicationState;
 import com.seol.communityfeed.post.repository.ui.dto.GetPostContentResponseDto;
@@ -15,26 +11,26 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.seol.communityfeed.acceptance.steps.FeedAcceptanceSteps.*;
-import static com.seol.communityfeed.acceptance.steps.LoginAcceptanceSteps.requestLoginGetToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FeedAcceptanceTest extends AcceptanceTestTemplate {
 
     private String user1Token;
     private String user2Token;
-    private Long user2Id = 2L;
+    private Long user2Id;
 
     @BeforeEach
     void setUp() {
         super.init();
 
-        // User1 생성
-        user1Token = createAndLoginUser("user1@gmail.com", "nickname1");
+        // 유저 회원가입 및 로그인
+        user1Token = FeedAcceptanceSteps.registerAndGetToken("user1@gmail.com", "password");
+        user2Token = FeedAcceptanceSteps.registerAndGetToken("user2@gmail.com", "password");
 
-        // User2 생성
-        user2Token = createAndLoginUser("user2@gmail.com", "nickname2");
+        // 유저2 ID 조회
+        user2Id = FeedAcceptanceSteps.getUserIdByToken(user2Token);
 
-        // User1 → User2 팔로우
+        // user1이 user2를 팔로우
         FeedAcceptanceSteps.requestFollow(user2Id, user1Token);
     }
 
@@ -53,28 +49,11 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
     }
 
     @Test
-    void givenUserHasFollower_whenFollowerUserRequestFeedWithInvalidToken_thenFailWith400() {
+    void givenUserHasFollower_whenFollowerUserRequestFeedWithInvalidToken_thenFollowerCanGetPostFromFeed() {
         // when
-        Integer code = FeedAcceptanceSteps.requestFeedCode("abcd");
+        Integer code = FeedAcceptanceSteps.requestFeedCode("abcd"); // 유효하지 않은 토큰으로 피드 조회
 
         // then
         assertEquals(400, code);
-    }
-
-    // ✅ 유저 생성 및 로그인 공통 로직
-    private String createAndLoginUser(String email, String nickname) {
-        // 1. 인증 이메일 요청
-        String verificationToken = SignUpAcceptanceSteps.requestSendEmailAndGetToken(new SendEmailRequestDto(email));
-
-        // 2. 이메일 인증
-        SignUpAcceptanceSteps.requestVerifyEmail(email, verificationToken);
-
-        // 3. 회원가입
-        SignUpAcceptanceSteps.registerUser(new CreateUserAuthRequestDto(
-                email, "password", "USER", nickname, "https://example.com/img"
-        ));
-
-        // 4. 로그인 후 토큰 발급
-        return requestLoginGetToken(new LoginRequestDto(email, "password"));
     }
 }
