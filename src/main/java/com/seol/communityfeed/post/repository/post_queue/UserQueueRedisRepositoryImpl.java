@@ -2,6 +2,7 @@ package com.seol.communityfeed.post.repository.post_queue;
 
 import com.seol.communityfeed.post.repository.entity.post.PostEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Profile("!test")
 public class UserQueueRedisRepositoryImpl implements UserQueueRedisRepository {
 
     private final RedisTemplate<String, Object> redisTemplate;
