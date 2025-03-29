@@ -2,9 +2,11 @@ package com.seol.communityfeed.post.repository;
 
 import com.seol.communityfeed.post.application.Interface.PostRepository;
 import com.seol.communityfeed.post.domain.Post;
+import org.springframework.context.annotation.Profile;
 
 import java.util.*;
 
+@Profile("test")
 public class FakePostRepository implements PostRepository {
 
     private final Map<Long, Post> store = new HashMap<>();

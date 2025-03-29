@@ -4,6 +4,7 @@ import com.seol.communityfeed.post.repository.entity.post.PostEntity;
 import com.seol.communityfeed.post.repository.jpa.JpaPostRepository;
 import com.seol.communityfeed.post.repository.ui.dto.GetPostContentResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
+@Primary
 public class UserPostQueueQueryRepositoryImpl implements UserPostQueueQueryRepository {
 
     private final RedisTemplate<String, String> redisTemplate;

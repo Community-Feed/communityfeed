@@ -4,9 +4,11 @@ import com.seol.communityfeed.post.application.Interface.LikeRepository;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.domain.comment.Comment;
 import com.seol.communityfeed.user.domain.User;
+import org.springframework.context.annotation.Profile;
 
 import java.util.*;
 
+@Profile("test")
 public class FakeLikeRepository implements LikeRepository {
 
     private final Map<Post, Set<User>> postLikes = new HashMap<>();

@@ -3,12 +3,13 @@ package com.seol.communityfeed.post.repository;
 import com.seol.communityfeed.common.domain.PositiveIntegerCounter;
 import com.seol.communityfeed.post.application.Interface.CommentRepository;
 import com.seol.communityfeed.post.domain.comment.Comment;
+import org.springframework.context.annotation.Profile;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-
+@Profile("test")
 public class FakeCommentRepository implements CommentRepository {
 
     private final Map<Long, Comment> store = new HashMap<>();

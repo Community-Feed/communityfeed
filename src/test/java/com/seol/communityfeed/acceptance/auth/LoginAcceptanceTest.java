@@ -1,11 +1,10 @@
 package com.seol.communityfeed.acceptance.auth;
 
 import com.seol.communityfeed.acceptance.utils.AcceptanceTestTemplate;
-import com.seol.communityfeed.auth.application.dto.CreateUserAuthRequestDto;
 import com.seol.communityfeed.auth.application.dto.LoginRequestDto;
-import com.seol.communityfeed.auth.application.dto.SendEmailRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 
 import static com.seol.communityfeed.acceptance.steps.LoginAcceptanceSteps.requestLoginGetResponseCode;
@@ -13,6 +12,7 @@ import static com.seol.communityfeed.acceptance.steps.LoginAcceptanceSteps.reque
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@ActiveProfiles("test")
 public class LoginAcceptanceTest extends AcceptanceTestTemplate {
     private final String email = "email@gamil.com";
 
