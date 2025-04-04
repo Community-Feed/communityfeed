@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public Response<Void> handleIllegalArgumentException(IllegalArgumentException exception){
-        //log.error(exception.getMessage());
+        log.error("IllegalArgumentException: {}", exception.getMessage());
         return Response.error(ErrorCode.INVALID_INPUT_VALUE);
     }
 

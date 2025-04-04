@@ -23,7 +23,7 @@ public class AuthService {
         Email email = Email.createEmail(dto.email());
 
         if(!verificationRepository.isEmailVerified(email)){
-            throw  new IllegalArgumentException("인증되지 않은 이메일입니다.");
+            throw new IllegalArgumentException("인증되지 않은 이메일입니다.");
         }
 
         UserAuth userAuth = new UserAuth(dto.email(), dto.password(), dto.role());
@@ -34,8 +34,15 @@ public class AuthService {
     }
 
     public UserAccessTokenResponseDto login(LoginRequestDto dto){
-        UserAuth userAuth = userAuthRepository.loginUser(dto.email(), dto.password());
+        UserAuth userAuth = userAuthRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+
+        if (!userAuth.matchPassword(dto.password())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
         String token = tokenProvider.createToken(userAuth.getUserId(), userAuth.getUserRole());
-        return new UserAccessTokenResponseDto(token);
+        return new UserAccessTokenResponseDto(token, userAuth.getUserId()); // ✅ userId 추가된 생성자 사용
     }
 }
+

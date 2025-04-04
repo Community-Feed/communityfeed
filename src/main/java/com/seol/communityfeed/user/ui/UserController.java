@@ -1,5 +1,6 @@
 package com.seol.communityfeed.user.ui;
 
+import com.seol.communityfeed.common.principal.AuthPrincipal;
 import com.seol.communityfeed.common.ui.Response;
 import com.seol.communityfeed.user.application.Dto.CreateUserRequestDto;
 import com.seol.communityfeed.user.application.Dto.GetUserListResponseDto;
@@ -42,5 +43,11 @@ public class UserController {
     public Response<List<GetUserListResponseDto>> getFollowerList(@PathVariable(name = "userId")Long userId){
         List<GetUserListResponseDto> result = userListQueryRepository.getFollowerUserList(userId);
         return Response.ok(result);
+    }
+
+    // ✅ 로그인한 유저 정보 조회
+    @GetMapping("/me")
+    public Response<GetUserResponseDto> getMyProfile(@AuthPrincipal Long userId) {
+        return Response.ok(userService.getUserProfile(userId));
     }
 }

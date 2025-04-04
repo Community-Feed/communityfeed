@@ -6,7 +6,6 @@ import com.seol.communityfeed.auth.application.dto.SendEmailRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.seol.communityfeed.acceptance.steps.SignUpAcceptanceSteps.requestSendEmail;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SignUpAccentanceTest extends AcceptanceTestTemplate {
@@ -18,9 +17,6 @@ class SignUpAccentanceTest extends AcceptanceTestTemplate {
         this.cleanUp();
     }
 
-    //TODO 오류 수정
-
-    /*
     @Test
     void givenEmail_whenSendEmail_thenVerificationTokenSaved() {
         // given
@@ -75,5 +71,5 @@ class SignUpAccentanceTest extends AcceptanceTestTemplate {
         // then
         assertEquals(400, code);
         assertFalse(this.isEmailVerified(email));
-    }*/
+    }
 }

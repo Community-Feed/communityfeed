@@ -21,8 +21,7 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
         this.cleanUp();
         this.createUser(email);
     }
-    //TODO 오류수정
-/*
+
     @Test
     void givenEmailAndPassword_whenLogin_thenReturnToken(){
         //given
@@ -35,7 +34,7 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
         assertNotNull(token);
     }
 
-    @Test
+   /* @Test
     void givenEmailAndWrongPassword_whenLogin_thenReturnCodeNotZero(){
         //given
         LoginRequestDto dto = new LoginRequestDto(email,"password");
@@ -45,5 +44,6 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
 
         //then
         assertEquals(400, code);
-    }*/
+    }
+    */
 }

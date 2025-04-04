@@ -5,49 +5,59 @@ import com.seol.communityfeed.post.repository.ui.dto.GetPostContentResponseDto;
 import io.restassured.RestAssured;
 import org.springframework.http.MediaType;
 
+import io.restassured.response.Response;
+import io.restassured.response.ExtractableResponse;
+
 import java.util.List;
 
 import java.util.Map;
 
 public class FeedAcceptanceSteps {
 
-    public static String registerAndGetToken(String email, String password) {
+    public static class LoginInfo {
+        public String accessToken;
+        public Long userId;
+    }
+
+    public static LoginInfo registerAndGetLoginInfo(String email, String password) {
         // 회원가입
         RestAssured
                 .given()
                 .body(Map.of("email", email, "password", password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/auth/register")
+                .post("/signup/register")
                 .then()
                 .statusCode(200);
 
         // 로그인
-        var response = RestAssured
+        ExtractableResponse<Response> response = RestAssured
                 .given()
                 .body(Map.of("email", email, "password", password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/auth/login")
+                .post("/login")
                 .then()
                 .statusCode(200)
                 .extract();
 
-        return response.jsonPath().getString("value.accessToken");
-    }
+        LoginInfo info = new LoginInfo();
+        info.accessToken = response.jsonPath().getString("value.accessToken");
 
-    public static Long getUserIdByToken(String token) {
-        return RestAssured
+        // /me 엔드포인트로 userId 조회
+        info.userId = RestAssured
                 .given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + info.accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .get("/me")
+                .get("/user/me") // 이 엔드포인트가 있어야 함
                 .then()
                 .statusCode(200)
                 .extract()
                 .jsonPath()
                 .getLong("value.id");
+
+        return info;
     }
 
     public static Long requestCreatePost(CreatePostRequestDto dto, String token) {

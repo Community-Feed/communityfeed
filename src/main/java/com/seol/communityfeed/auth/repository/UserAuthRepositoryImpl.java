@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserAuthRepositoryImpl implements UserAuthRepository {
@@ -36,5 +38,11 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
         }
 
         return userAuth;
+    }
+
+    @Override
+    public Optional<UserAuth> findByEmail(String email) {
+        return jpaUserAuthRepository.findById(email)
+                .map(UserAuthEntity::toUserAuth);
     }
 }

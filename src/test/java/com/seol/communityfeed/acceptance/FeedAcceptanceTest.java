@@ -23,19 +23,19 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
     void setUp() {
         super.init();
 
-        // 유저 회원가입 및 로그인
-        user1Token = FeedAcceptanceSteps.registerAndGetToken("user1@gmail.com", "password");
-        user2Token = FeedAcceptanceSteps.registerAndGetToken("user2@gmail.com", "password");
+        FeedAcceptanceSteps.LoginInfo user1 = FeedAcceptanceSteps.registerAndGetLoginInfo("user1@gmail.com", "password");
+        FeedAcceptanceSteps.LoginInfo user2 = FeedAcceptanceSteps.registerAndGetLoginInfo("user2@gmail.com", "password");
 
-        // 유저2 ID 조회
-        user2Id = FeedAcceptanceSteps.getUserIdByToken(user2Token);
+        user1Token = user1.accessToken;
+        user2Token = user2.accessToken;
+        user2Id = user2.userId;
 
-        // user1이 user2를 팔로우
         FeedAcceptanceSteps.requestFollow(user2Id, user1Token);
     }
 
-    //TODO: 오류 수정
+    //TODO 오류 수정하기
     /*
+
     @Test
     void givenUserHasFollowerAndCreatePost_whenFollowerUserRequestFeed_thenFollowerCanGetPostFromFeed() {
         // given: User2가 게시글 생성
