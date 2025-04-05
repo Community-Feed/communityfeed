@@ -36,7 +36,7 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
         FeedAcceptanceSteps.requestFollow(user2Id, user1Token);
     }
 
-    /*
+
     @Test
     void givenUserHasFollowerAndCreatePost_whenFollowerUserRequestFeed_thenFollowerCanGetPostFromFeed() {
         // given: User2가 게시글 생성
@@ -58,5 +58,5 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
 
         // then
         assertEquals(400, code);
-    }*/
+    }
 }
