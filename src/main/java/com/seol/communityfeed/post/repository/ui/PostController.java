@@ -2,7 +2,6 @@ package com.seol.communityfeed.post.repository.ui;
 
 import com.seol.communityfeed.common.ui.Response;
 import com.seol.communityfeed.post.application.Dto.CreatePostRequestDto;
-import com.seol.communityfeed.post.application.Dto.LikeRequestDto;
 import com.seol.communityfeed.post.application.Dto.UpdatePostRequestDto;
 import com.seol.communityfeed.post.application.PostService;
 import com.seol.communityfeed.post.domain.Post;

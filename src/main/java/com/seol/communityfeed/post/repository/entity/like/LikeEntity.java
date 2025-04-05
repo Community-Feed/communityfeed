@@ -4,7 +4,6 @@ import com.seol.communityfeed.common.repository.entity.TimeBaseEntity;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.domain.comment.Comment;
 import com.seol.communityfeed.user.domain.User;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

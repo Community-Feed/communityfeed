@@ -1,7 +1,6 @@
 package com.seol.communityfeed.post.application;
 
 import com.seol.communityfeed.post.application.Dto.CreatePostRequestDto;
-import com.seol.communityfeed.post.application.Dto.LikeRequestDto;
 import com.seol.communityfeed.post.application.Dto.UpdatePostRequestDto;
 import com.seol.communityfeed.post.application.Interface.LikeRepository;
 import com.seol.communityfeed.post.application.Interface.PostRepository;

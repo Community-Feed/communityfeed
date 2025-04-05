@@ -2,7 +2,6 @@ package com.seol.communityfeed.auth.repository.entity;
 
 import com.seol.communityfeed.auth.domain.UserAuth;
 import com.seol.communityfeed.common.repository.entity.TimeBaseEntity;
-import com.seol.communityfeed.user.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

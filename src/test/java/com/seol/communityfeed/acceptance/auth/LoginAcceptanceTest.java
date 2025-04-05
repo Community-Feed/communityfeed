@@ -34,7 +34,7 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
         assertNotNull(token);
     }
 
-   /* @Test
+    @Test
     void givenEmailAndWrongPassword_whenLogin_thenReturnCodeNotZero(){
         //given
         LoginRequestDto dto = new LoginRequestDto(email,"password");
@@ -45,5 +45,5 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
         //then
         assertEquals(400, code);
     }
-    */
+
 }

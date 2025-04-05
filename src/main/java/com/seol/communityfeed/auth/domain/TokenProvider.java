@@ -10,15 +10,6 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-   /* private final SecretKey secretKey;
-    private static final long TOKEN_VALID_TIME = 1000L * 60 * 60; // 1시간
-
-
-    public TokenProvider(@Value("${secret-key}") String secret) {
-        byte[] decodedKey = Base64.getDecoder().decode(secret);
-        this.secretKey = new SecretKeySpec(decodedKey, "HmacSHA256");
-    }*/
-
     private final SecretKey secretKey;
     private static final long TOKEN_VALID_TIME = 1000L * 60 * 60;
 

@@ -5,10 +5,7 @@ import com.seol.communityfeed.user.application.Dto.GetUserResponseDto;
 import com.seol.communityfeed.user.application.Interface.UserRepository;
 import com.seol.communityfeed.user.domain.User;
 import com.seol.communityfeed.user.domain.UserInfo;
-import com.seol.communityfeed.user.repository.entity.UserEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.IllformedLocaleException;
 
 @Service
 public class UserService {

@@ -3,7 +3,6 @@ package com.seol.communityfeed.post.repository.entity.post;
 import com.seol.communityfeed.common.domain.PositiveIntegerCounter;
 import com.seol.communityfeed.common.repository.entity.TimeBaseEntity;
 import com.seol.communityfeed.post.domain.Post;
-import com.seol.communityfeed.post.domain.content.Content;
 import com.seol.communityfeed.post.domain.content.PostContent;
 import com.seol.communityfeed.post.domain.content.PostPublicationState;
 import com.seol.communityfeed.user.repository.entity.UserEntity;
