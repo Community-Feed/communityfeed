@@ -9,7 +9,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -45,6 +47,10 @@ public class UserEntity extends TimeBaseEntity {
         this.followingCount = new PositiveIntegerCounter();
         this.followerCounter = new PositiveIntegerCounter();
     }
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDate regdate;
 
     // ✅ User -> UserEntity 변환용 생성자
     public UserEntity(User user) {
