@@ -1,6 +1,7 @@
 package com.seol.communityfeed.common.ui;
 
 import com.seol.communityfeed.common.domain.exception.ErrorCode;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,8 +17,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public  Response<Void> handleException(Exception exception){
-        log.error(exception.getMessage());
+    public Object handleException(Exception e, HttpServletRequest request) throws Exception {
+        String uri = request.getRequestURI();
+
+        // Swagger, HTML, JS, CSS 요청은 기본 처리로 넘김
+        if (uri.startsWith("/v3/api-docs") ||
+                uri.startsWith("/swagger-ui") ||
+                uri.endsWith(".html") ||
+                uri.endsWith(".js") ||
+                uri.endsWith(".css")) {
+            throw e;
+        }
+
+        log.error("Exception: {}", e.getMessage());
         return Response.error(ErrorCode.INVALID_INPUT_VALUE);
     }
 }
