@@ -116,10 +116,10 @@
         <script src="js/scripts.js"></script>
         <script src="js/datatables-simple-demo.js"></script>
     </body>
-<script th:inline="javascript">
-    const totalCount = [[${totalCount}]];
-    const currentIndex = [[${requestDto.getPageIndex()}]];
-    const postId = /*[[${requestDto.getPostId()}]]*/ '';
-    createPagination(totalCount, currentIndex, 'posts', `&postId=${postId}`);
-</script>
+    <script th:inline="javascript">
+        const totalCount = [[${totalCount}]];
+        const currentIndex = Math.max(1, [[${requestDto.getPageIndex()}]]);
+        const postId = /*[[${requestDto.getPostId()}]]*/ '';
+        createPagination(totalCount, currentIndex, 'posts', `&postId=${postId}`);
+    </script>
 </html>

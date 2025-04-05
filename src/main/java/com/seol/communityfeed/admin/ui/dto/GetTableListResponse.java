@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetTableListResponse<T> {
-    private int totalCount;
-    private List<T> tableDate;
+    private long totalCount;      
+    private List<T> tableData;
 }
