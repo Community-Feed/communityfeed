@@ -41,6 +41,7 @@ public class AuthService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+        userAuth = userAuthRepository.loginUser(dto.email(), dto.password(), dto.fcmToken());
         String token = tokenProvider.createToken(userAuth.getUserId(), userAuth.getUserRole());
         return new UserAccessTokenResponseDto(token, userAuth.getUserId()); // ✅ userId 추가된 생성자 사용
     }

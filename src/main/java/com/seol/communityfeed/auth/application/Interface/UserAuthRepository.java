@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserAuthRepository {
 
     UserAuth registerUser(UserAuth userAuth, User user);
-    UserAuth loginUser(String emaill, String password);
+    UserAuth loginUser(String email, String password, String fcmToken);
     Optional<UserAuth> findByEmail(String email);
 
 }

@@ -1,5 +1,6 @@
 package com.seol.communityfeed.post.repository;
 
+import com.seol.communityfeed.message.repository.application.MessageRepository;
 import com.seol.communityfeed.post.application.Interface.LikeRepository;
 import com.seol.communityfeed.post.domain.Post;
 import com.seol.communityfeed.post.domain.comment.Comment;
@@ -27,6 +28,7 @@ public class LikeRepositoryImpl implements LikeRepository {
     private final JpaPostRepository jpaPostRepository;
     private final JpaCommentRepository jpaCommentRepository;
     private final JpaLikeRepository jpaLikeRepository;
+    private final MessageRepository messageRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -47,6 +49,7 @@ public class LikeRepositoryImpl implements LikeRepository {
 
         jpaLikeRepository.save(new LikeEntity(post, user));
         jpaPostRepository.updateLikeCount(post.getId(), 1);
+        messageRepository.sendLikeMessage(user, post.getAuthor());
     }
 
     @Override
