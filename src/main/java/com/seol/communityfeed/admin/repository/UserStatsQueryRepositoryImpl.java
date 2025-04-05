@@ -2,14 +2,13 @@ package com.seol.communityfeed.admin.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.seol.communityfeed.admin.ui.dto.GetDailyRegisterUserResponseDto;
+import com.seol.communityfeed.admin.ui.dto.users.GetDailyRegisterUserResponseDto;
 import com.seol.communityfeed.admin.ui.query.UserStatsQueryRepository;
-import com.seol.communityfeed.common.TimeCalculator;
+import com.seol.communityfeed.common.utils.TimeCalculator;
 import com.seol.communityfeed.user.repository.entity.QUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository

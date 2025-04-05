@@ -1,6 +1,6 @@
 package com.seol.communityfeed.admin.ui.query;
 
-import com.seol.communityfeed.admin.ui.dto.GetDailyRegisterUserResponseDto;
+import com.seol.communityfeed.admin.ui.dto.users.GetDailyRegisterUserResponseDto;
 
 import java.util.List;
 

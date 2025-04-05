@@ -1,4 +1,4 @@
-package com.seol.communityfeed.admin.ui.dto;
+package com.seol.communityfeed.admin.ui.dto.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
