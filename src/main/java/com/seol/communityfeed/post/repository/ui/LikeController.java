@@ -1,5 +1,6 @@
 package com.seol.communityfeed.post.repository.ui;
 
+import com.seol.communityfeed.common.idempotency.Idempotent;
 import com.seol.communityfeed.common.ui.Response;
 import com.seol.communityfeed.post.application.LikeService;
 import com.seol.communityfeed.user.application.UserService;
@@ -16,6 +17,7 @@ public class LikeController {
     private final LikeService likeService;
     private final UserService userService;
 
+    @Idempotent
     @PostMapping("/post/{postId}/like")
     public Response<Void> likePost(@PathVariable Long postId, @RequestParam Long userId) {
         likeService.likePost(postId, userId);
@@ -28,6 +30,7 @@ public class LikeController {
         return Response.ok(null);
     }
 
+    @Idempotent
     @PostMapping("/comment/{commentId}/like")
     public Response<Void> likeComment(@PathVariable Long commentId, @RequestParam Long userId) {
         likeService.likeComment(commentId, userId);
