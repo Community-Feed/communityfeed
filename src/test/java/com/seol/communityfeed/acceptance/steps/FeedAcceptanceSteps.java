@@ -12,6 +12,7 @@ import java.util.List;
 
 import java.util.Map;
 
+
 public class FeedAcceptanceSteps {
 
     public static class LoginInfo {
@@ -19,8 +20,29 @@ public class FeedAcceptanceSteps {
         public Long userId;
     }
 
+
     public static LoginInfo registerAndGetLoginInfo(String email, String password) {
-        // 회원가입
+        // 1. 이메일 인증 요청
+        RestAssured
+                .given()
+                .body(Map.of("email", email))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/signup/send-verification-email")
+                .then()
+                .statusCode(200);
+
+        // 2. 이메일 인증 확인 (테스트에서는 고정된 토큰 사용: 예: "123456")
+        RestAssured
+                .given()
+                .queryParam("email", email)
+                .queryParam("token", "123456")
+                .when()
+                .get("/signup/verify-token")
+                .then()
+                .statusCode(200);
+
+        // 3. 회원가입
         RestAssured
                 .given()
                 .body(Map.of("email", email, "password", password))
@@ -30,7 +52,7 @@ public class FeedAcceptanceSteps {
                 .then()
                 .statusCode(200);
 
-        // 로그인
+        // 4. 로그인 후 토큰 저장
         ExtractableResponse<Response> response = RestAssured
                 .given()
                 .body(Map.of("email", email, "password", password))
@@ -41,24 +63,30 @@ public class FeedAcceptanceSteps {
                 .statusCode(200)
                 .extract();
 
-        LoginInfo info = new LoginInfo();
-        info.accessToken = response.jsonPath().getString("value.accessToken");
+        String token = response.jsonPath().getString("value.accessToken");
+        if (token == null) {
+            System.out.println("로그인 응답에 accessToken 없음: " + response.asString());
+        }
 
-        // /me 엔드포인트로 userId 조회
-        info.userId = RestAssured
+        // 5. 로그인 후 유저 정보 가져오기
+        Long userId = RestAssured
                 .given()
-                .header("Authorization", "Bearer " + info.accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer " + token)
                 .when()
-                .get("/user/me") // 이 엔드포인트가 있어야 함
+                .get("/user/me")
                 .then()
                 .statusCode(200)
                 .extract()
                 .jsonPath()
                 .getLong("value.id");
 
+        LoginInfo info = new LoginInfo();
+        info.accessToken = token;
+        info.userId = userId;
+
         return info;
     }
+
 
     public static Long requestCreatePost(CreatePostRequestDto dto, String token) {
         var response = RestAssured

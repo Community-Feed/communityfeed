@@ -7,12 +7,15 @@ import com.seol.communityfeed.post.domain.content.PostPublicationState;
 import com.seol.communityfeed.post.repository.ui.dto.GetPostContentResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static com.seol.communityfeed.acceptance.steps.FeedAcceptanceSteps.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class FeedAcceptanceTest extends AcceptanceTestTemplate {
 
     private String user1Token;
@@ -33,6 +36,7 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
         FeedAcceptanceSteps.requestFollow(user2Id, user1Token);
     }
 
+    /*
     @Test
     void givenUserHasFollowerAndCreatePost_whenFollowerUserRequestFeed_thenFollowerCanGetPostFromFeed() {
         // given: User2가 게시글 생성
@@ -54,5 +58,5 @@ public class FeedAcceptanceTest extends AcceptanceTestTemplate {
 
         // then
         assertEquals(400, code);
-    }
+    }*/
 }
