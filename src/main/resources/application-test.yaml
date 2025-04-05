@@ -16,3 +16,6 @@ spring:
 
 # application.yaml
 secret-key: dG9wLXNlY3JldC1rZXktc3VwZXItdG9wLXNlY3JldC1rZXk=
+
+fcm:
+  certification: ${FIREBASE_CERT_PATH}
