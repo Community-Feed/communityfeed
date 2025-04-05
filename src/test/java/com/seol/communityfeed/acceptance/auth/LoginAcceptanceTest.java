@@ -25,7 +25,7 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
     @Test
     void givenEmailAndPassword_whenLogin_thenReturnToken(){
         //given
-        LoginRequestDto dto = new LoginRequestDto(email, "password");
+        LoginRequestDto dto = new LoginRequestDto(email, "password", "token");
 
         //when
         String token = requestLoginGetToken(dto);
@@ -34,17 +34,17 @@ public class LoginAcceptanceTest extends AcceptanceTestTemplate {
         assertNotNull(token);
     }
 
-   /*
+/*
     @Test
     void givenEmailAndWrongPassword_whenLogin_thenReturnCodeNotZero(){
         //given
-        LoginRequestDto dto = new LoginRequestDto(email,"password");
+        LoginRequestDto dto = new LoginRequestDto(email,"password","token");
 
         //when
         Integer code = requestLoginGetResponseCode(dto);
 
         //then
         assertEquals(400, code);
-    }*/
-
+    }
+*/
 }

@@ -38,3 +38,6 @@ out/
 
 ### docker
 docker/app.env
+
+## firebase
+src/main/resources/firebase.json
