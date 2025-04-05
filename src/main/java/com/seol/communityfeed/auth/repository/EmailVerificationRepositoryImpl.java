@@ -5,7 +5,6 @@ import com.seol.communityfeed.auth.domain.Email;
 import com.seol.communityfeed.auth.repository.entity.EmailVerificationEntity;
 import com.seol.communityfeed.auth.repository.jpa.JpaEmailVerificationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,9 +1,7 @@
 package com.seol.communityfeed.post.repository.post_queue;
 
 import com.seol.communityfeed.post.repository.entity.post.PostEntity;
-import com.seol.communityfeed.post.repository.entity.post.UserPostQueueEntity;
 import com.seol.communityfeed.post.repository.jpa.JpaPostRepository;
-import com.seol.communityfeed.post.repository.jpa.JpaUserPostQueueRepository;
 import com.seol.communityfeed.user.repository.entity.UserEntity;
 import com.seol.communityfeed.user.repository.jpa.JpaUserRelationRepository;
 import lombok.RequiredArgsConstructor;
